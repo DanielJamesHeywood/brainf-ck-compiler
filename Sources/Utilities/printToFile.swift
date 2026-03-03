@@ -1,11 +1,6 @@
 import System
 
-@inlinable public func print(
-    _ items: Any...,
-    to file: FileDescriptor,
-    separator: String = " ",
-    terminator: String = "\n"
-) {
+@inlinable public func print(_ items: Any..., to file: FileDescriptor, separator: String = " ", terminator: String = "\n") {
     let string = items.map { item in "\(item)" } .joined(separator: separator) + terminator
     try! file.writeAll(string.utf8)
 }
