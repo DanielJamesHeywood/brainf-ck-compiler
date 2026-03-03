@@ -23,5 +23,6 @@ import Utilities
             )
         }
     }
-
+    
+    @Suite struct PrintToFileTests {}
 }
