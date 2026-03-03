@@ -1,6 +1,5 @@
 import System
 
-@available(macOS, introduced: 11.0)
 @inlinable public func print(
     _ items: Any...,
     to file: FileDescriptor,
