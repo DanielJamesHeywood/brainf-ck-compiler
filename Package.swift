@@ -4,9 +4,12 @@ import PackageDescription
 let package = Package(
     name: "brainf*ck compiler",
     defaultLocalization: "en-GB",
-    products: [.executable(name: "bfc", targets: ["brainf*ck compiler"])],
+    products: [
+        .executable(name: "bfc", targets: ["brainf*ck compiler"])
+    ],
     targets: [
-        .executableTarget(name: "brainf*ck compiler", dependencies: ["Utilities"]),
-        .target(name: "Utilities")
+        .target(name: "Utilities"),
+        .testTarget(name: "Utilities tests", dependencies: ["Utilities"]),
+        .executableTarget(name: "brainf*ck compiler", dependencies: ["Utilities"])
     ]
 )
