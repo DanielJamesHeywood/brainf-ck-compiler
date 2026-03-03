@@ -5,8 +5,7 @@ case success
 case failure
 }
 
-@inlinable
-public func exit(with code: ExitCode) -> Never {
+@inlinable public func exit(with code: ExitCode) -> Never {
     switch code {
     case .success:
         exit(EXIT_SUCCESS)
