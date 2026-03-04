@@ -35,7 +35,7 @@ import Testing
         #expect(Command("]") == .endLoop)
     }
     
-    @Test func initializingCommandsFromInvalidCharacters() {
+    @Test func initializingCommandsFromString() {
         #expect("Hello, world!".compactMap { character in Command(character) } == [.inputByte])
     }
 }
