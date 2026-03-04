@@ -7,9 +7,9 @@ let package = Package(
     platforms: [.macOS("26.0")],
     products: [.executable(name: "bfc", targets: ["brainf*ck compiler"])],
     targets: [
-        .target(name: "Utilities"),
-        .testTarget(name: "Utilities tests", dependencies: ["Utilities"]),
         .executableTarget(name: "brainf*ck compiler", dependencies: ["Utilities"]),
-        .testTarget(name: "brainf*ck compiler tests", dependencies: ["brainf*ck compiler"])
+        .testTarget(name: "brainf*ck compiler tests", dependencies: ["brainf*ck compiler"]),
+        .target(name: "Utilities"),
+        .testTarget(name: "Utilities tests", dependencies: ["Utilities"])
     ]
 )
