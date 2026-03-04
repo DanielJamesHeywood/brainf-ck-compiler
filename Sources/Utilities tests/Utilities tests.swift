@@ -6,7 +6,7 @@ import Utilities
     
     @Suite struct ExitTests {
         
-        @Test func exitingWithSuccessExitsWithSuccess() async {
+        @Test func exitingWithSuccess() async {
             await #expect(
                 processExitsWith: .success,
                 performing: {
@@ -15,7 +15,7 @@ import Utilities
             )
         }
         
-        @Test func exitingWithFailureExitsWithFailure() async {
+        @Test func exitingWithFailure() async {
             await #expect(
                 processExitsWith: .failure,
                 performing: {
@@ -29,7 +29,7 @@ import Utilities
     
     @Suite struct PrintToFileTests {
         
-        @Test func printingToFilePrintsToFile() throws {
+        @Test func printingToFile() throws {
             let (readEnd, writeEnd) = try FileDescriptor.pipe()
             try writeEnd.closeAfter {
                 print("Hello, world!", to: writeEnd)
