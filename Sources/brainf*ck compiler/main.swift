@@ -1,3 +1,4 @@
+import BFCommand
 import System
 import Utilities
 
