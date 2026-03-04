@@ -22,5 +22,6 @@ do {
         print("Failed to read from '\(bfFilePath)': \(error)", to: .standardError)
         exit(with: .failure)
     }
+    let commands = contentsOfBFFile.compactMap { character in Command(character) }
     exit(with: .failure)
 }
