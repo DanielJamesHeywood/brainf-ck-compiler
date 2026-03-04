@@ -39,7 +39,7 @@ import Utilities
             }
         }
         
-        @Test func printingToFileWithSeparator() throws {
+        @Test func printingToFileWithDefaultSeparator() throws {
             let (readEnd, writeEnd) = try FileDescriptor.pipe()
             try writeEnd.closeAfter {
                 print("Hello,", "world!", to: writeEnd)
