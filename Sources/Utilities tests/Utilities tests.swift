@@ -1,3 +1,4 @@
+import System
 import Testing
 import Utilities
 
@@ -26,5 +27,16 @@ import Utilities
     
     @Suite struct StringFromUTF8FileTests {}
     
-    @Suite struct PrintToFileTests {}
+    @Suite struct PrintToFileTests {
+        
+        @Test func printingToFilePrintsToFile() throws {
+            let (readEnd, writeEnd) = try FileDescriptor.pipe()
+            try writeEnd.closeAfter {
+                print("Hello, world!", to: writeEnd)
+            }
+            try readEnd.closeAfter {
+                try #expect(String(utf8ContentsOf: readEnd, expectedByteCount: 14) == "Hello, world!\n")
+            }
+        }
+    }
 }
