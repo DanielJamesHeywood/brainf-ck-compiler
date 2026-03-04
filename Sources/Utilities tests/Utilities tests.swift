@@ -68,5 +68,16 @@ import Utilities
                 try #expect(String(utf8ContentsOf: readEnd, expectedByteCount: 14) == "Hello, world!\n")
             }
         }
+        
+        @Test func printingToFileTwice() throws {
+            let (readEnd, writeEnd) = try FileDescriptor.pipe()
+            try writeEnd.closeAfter {
+                print("Hello,", to: writeEnd, terminator: " ")
+                print("world!", to: writeEnd)
+            }
+            try readEnd.closeAfter {
+                try #expect(String(utf8ContentsOf: readEnd, expectedByteCount: 14) == "Hello, world!\n")
+            }
+        }
     }
 }
