@@ -9,6 +9,7 @@ let package = Package(
     targets: [
         .target(name: "Utilities"),
         .testTarget(name: "Utilities tests", dependencies: ["Utilities"]),
-        .executableTarget(name: "brainf*ck compiler", dependencies: ["Utilities"])
+        .executableTarget(name: "brainf*ck compiler", dependencies: ["Utilities"]),
+        .testTarget(name: "brainf*ck compiler tests", dependencies: ["brainf*ck compiler"])
     ]
 )
