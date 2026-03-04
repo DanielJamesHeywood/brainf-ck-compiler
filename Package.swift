@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "brainf*ck compiler",
     defaultLocalization: "en-GB",
-    platforms: [.macOS("11.0")],
+    platforms: [.macOS("26.0")],
     products: [
         .executable(name: "bfc", targets: ["brainf*ck compiler"])
     ],
