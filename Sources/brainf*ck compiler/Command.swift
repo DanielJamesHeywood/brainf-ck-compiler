@@ -12,7 +12,7 @@ case endLoop
 
 extension Command {
     
-    init?(_ character: Character) {
+    @inlinable public init?(_ character: Character) {
         switch character {
         case ">":
             self = .incrementPointer
