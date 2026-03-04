@@ -24,5 +24,15 @@ do {
         )
         exit(with: .failure)
     }
+    let bfFileContents: String
+    do {
+        bfFileContents = try String(utf8ContentsOfFileAt: bfFilePath)
+    } catch {
+        print(
+            "Failed to read from '\(bfFilePath)': \(error)",
+            to: .standardError
+        )
+        exit(with: .failure)
+    }
     exit(with: .failure)
 }
