@@ -48,5 +48,25 @@ import Utilities
                 try #expect(String(utf8ContentsOf: readEnd, expectedByteCount: 14) == "Hello, world!\n")
             }
         }
+        
+        @Test func printingToFileWithSeparator() throws {
+            let (readEnd, writeEnd) = try FileDescriptor.pipe()
+            try writeEnd.closeAfter {
+                print("Hello,", " ", "world!", to: writeEnd, separator: "")
+            }
+            try readEnd.closeAfter {
+                try #expect(String(utf8ContentsOf: readEnd, expectedByteCount: 14) == "Hello, world!\n")
+            }
+        }
+        
+        @Test func printingToFileWithTerminator() throws {
+            let (readEnd, writeEnd) = try FileDescriptor.pipe()
+            try writeEnd.closeAfter {
+                print("Hello, world!\n", to: writeEnd, terminator: "")
+            }
+            try readEnd.closeAfter {
+                try #expect(String(utf8ContentsOf: readEnd, expectedByteCount: 14) == "Hello, world!\n")
+            }
+        }
     }
 }
