@@ -24,9 +24,9 @@ do {
         )
         exit(with: .failure)
     }
-    let bfFileContents: String
+    let contentsOfBFFile: String
     do {
-        bfFileContents = try String(utf8ContentsOfFileAt: bfFilePath)
+        contentsOfBFFile = try String(utf8ContentsOfFileAt: bfFilePath)
     } catch {
         print(
             "Failed to read from '\(bfFilePath)': \(error)",
