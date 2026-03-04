@@ -24,5 +24,7 @@ import Utilities
         }
     }
     
+    @Suite struct StringFromUTF8FileTests {}
+    
     @Suite struct PrintToFileTests {}
 }
