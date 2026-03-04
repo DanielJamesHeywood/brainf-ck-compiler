@@ -25,7 +25,18 @@ import Utilities
         }
     }
     
-    @Suite struct InitializeStringFromUTF8FileTests {}
+    @Suite struct InitializeStringFromUTF8FileTests {
+        
+        @Test func initializingStringFromUTF8File() throws {
+            let (readEnd, writeEnd) = try FileDescriptor.pipe()
+            try writeEnd.closeAfter {
+                try writeEnd.writeAll("Hello, world!".utf8)
+            } as Void
+            try readEnd.closeAfter {
+                try #expect(String(utf8ContentsOf: readEnd, expectedByteCount: 14) == "Hello, world!")
+            }
+        }
+    }
     
     @Suite struct PrintToFileTests {
         
