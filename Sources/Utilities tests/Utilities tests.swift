@@ -25,8 +25,6 @@ import Utilities
         }
     }
     
-    @Suite struct StringFromUTF8FileTests {}
-    
     @Suite struct PrintToFileTests {
         
         @Test func printingToFile() throws {
@@ -80,4 +78,6 @@ import Utilities
             }
         }
     }
+    
+    @Suite struct StringFromUTF8FileTests {}
 }
