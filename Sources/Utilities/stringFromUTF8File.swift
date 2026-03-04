@@ -17,4 +17,9 @@ extension String {
         }
         self.init(copying: try UTF8Span(validating: codeUnits.span))
     }
+    
+    @inlinable public init(utf8ContentsOfFileAt path: FilePath, expectedByteCount: Int = 4 * 1024) throws {
+        let file = try FileDescriptor.open(path, .readOnly)
+        self = try file.closeAfter { try String(utf8ContentsOf: file, expectedByteCount: expectedByteCount) }
+    }
 }
