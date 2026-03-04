@@ -27,7 +27,7 @@ import Utilities
     
     @Suite struct InitializeStringFromUTF8FileTests {
         
-        @Test func initializingStringFromUTF8File() throws {
+        @Test func initializingStringFromUTF8() throws {
             let (readEnd, writeEnd) = try FileDescriptor.pipe()
             try writeEnd.closeAfter {
                 try writeEnd.writeAll("Hello, world!".utf8)
@@ -35,6 +35,21 @@ import Utilities
             try readEnd.closeAfter {
                 try #expect(String(utf8ContentsOf: readEnd, expectedByteCount: 14) == "Hello, world!")
             }
+        }
+        
+        @Test func initializingStringFromInvalidUTF8() throws {
+            let (readEnd, writeEnd) = try FileDescriptor.pipe()
+            try writeEnd.closeAfter {
+                try writeEnd.writeAll([128])
+            } as Void
+            try readEnd.closeAfter {
+                #expect(
+                    throws: UTF8.ValidationError(.unexpectedContinuationByte, at: 0),
+                    performing: {
+                        try String(utf8ContentsOf: readEnd, expectedByteCount: 1)
+                    }
+                )
+            } as Void
         }
     }
     
