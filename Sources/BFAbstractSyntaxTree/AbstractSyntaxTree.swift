@@ -1,8 +1,8 @@
 import BFCommand
 
-public struct AbstractSyntaxTree {
+public struct AbstractSyntaxTree: Equatable {
     
-    public enum Node {
+    public enum Node: Equatable {
     case incrementPointer
     case decrementPointer
     case incrementByte
