@@ -11,7 +11,7 @@ let package = Package(
         .testTarget(name: "BFAbstractSyntaxTree tests", dependencies: ["BFAbstractSyntaxTree"]),
         .target(name: "BFCommand"),
         .testTarget(name: "BFCommand tests", dependencies: ["BFCommand"]),
-        .executableTarget(name: "brainf*ck compiler", dependencies: ["BFAbstractSyntaxTree", "BFCommand", "Utilities"]),
+        .executableTarget(name: "brainf*ck compiler", dependencies: ["BFAbstractSyntaxTree", "Utilities"]),
         .target(name: "Utilities"),
         .testTarget(name: "Utilities tests", dependencies: ["Utilities"])
     ]
