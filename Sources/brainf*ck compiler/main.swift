@@ -1,3 +1,4 @@
+import BFAbstractSyntaxTree
 import BFCommand
 import System
 import Utilities
@@ -24,5 +25,15 @@ do {
         exit(with: .failure)
     }
     let commands = contentsOfBFFile.compactMap { character in Command(character) }
+    let abstractSyntaxTree: AbstractSyntaxTree
+    do {
+        abstractSyntaxTree = try AbstractSyntaxTree(commands)
+    } catch .unmatchedStartLoop {
+        print("'\(bfFilePath)' contains an unmatched opening bracket ('[')", to: .standardError)
+        exit(with: .failure)
+    } catch .unmatchedEndLoop {
+        print("'\(bfFilePath)' contains an unmatched closing bracket (']')", to: .standardError)
+        exit(with: .failure)
+    }
     exit(with: .failure)
 }
