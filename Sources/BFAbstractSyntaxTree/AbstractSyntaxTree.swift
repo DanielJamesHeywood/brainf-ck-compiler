@@ -1,8 +1,8 @@
 import BFCommand
 
-struct AbstractSyntaxTree {
+public struct AbstractSyntaxTree {
     
-    enum Node {
+    public enum Node {
     case incrementPointer
     case decrementPointer
     case incrementByte
@@ -12,14 +12,14 @@ struct AbstractSyntaxTree {
     case loop([Node])
     }
     
-    enum InitializationError: Error {
+    public enum InitializationError: Error {
     case unmatchedStartLoop
     case unmatchedEndLoop
     }
     
-    let root: [Node]
+    public let root: [Node]
     
-    init(_ commands: some Sequence<Command>) throws(InitializationError) {
+    @inlinable public init(_ commands: some Sequence<Command>) throws(InitializationError) {
         var ancestors = [[]] as [[Node]]
         for command in commands {
             switch command {
