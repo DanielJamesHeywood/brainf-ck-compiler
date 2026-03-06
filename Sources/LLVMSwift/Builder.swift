@@ -1,10 +1,10 @@
 import LLVM
 
-public class Builder {
+public class LLVMBuilder {
     
     @usableFromInline let builder: LLVMBuilderRef
     
-    @inlinable init(context: Context) {
+    @inlinable init(context: LLVMContext) {
         self.builder = LLVMCreateBuilderInContext(context.context)
     }
     

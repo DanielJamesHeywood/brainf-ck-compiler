@@ -1,10 +1,10 @@
 import LLVM
 
-public class Module {
+public class LLVMModule {
     
     @usableFromInline let module: LLVMModuleRef
     
-    @inlinable init(name: String, context: Context) {
+    @inlinable init(name: String, context: LLVMContext) {
         self.module = LLVMModuleCreateWithNameInContext(name, context.context)
     }
     
