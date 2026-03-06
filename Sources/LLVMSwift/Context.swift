@@ -8,3 +8,10 @@ public class Context {
         LLVMContextDispose(context)
     }
 }
+
+extension Context {
+    
+    @inlinable public func makeBuilder() -> Builder {
+        Builder(context: self)
+    }
+}
