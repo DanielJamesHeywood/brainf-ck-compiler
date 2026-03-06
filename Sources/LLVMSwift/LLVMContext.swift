@@ -4,6 +4,8 @@ public class LLVMContext {
     
     @usableFromInline let context = LLVMContextCreate() as LLVMContextRef
     
+    @inlinable public init() {}
+    
     @inlinable deinit {
         LLVMContextDispose(context)
     }
