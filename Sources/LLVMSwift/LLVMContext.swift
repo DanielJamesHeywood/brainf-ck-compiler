@@ -15,7 +15,7 @@ extension LLVMContext {
         LLVMBuilder(context: self)
     }
     
-    @inlinable public func makeModule(name: String) -> LLVMModule {
+    @inlinable public func makeModule(name: String = "") -> LLVMModule {
         LLVMModule(name: name, context: self)
     }
     
