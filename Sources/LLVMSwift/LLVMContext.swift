@@ -19,7 +19,7 @@ extension LLVMContext {
         LLVMModule(name: name, context: self)
     }
     
-    @inlinable public func makeInt8Type() -> LLVMInt8Type {
-        LLVMInt8Type(context: self)
+    @inlinable public func makeInt8Type() -> LLVMInt8.LLVMType {
+        LLVMInt8.LLVMType(context: self)
     }
 }
