@@ -2,9 +2,9 @@ import LLVM
 
 public class Context {
     
-    let context = LLVMContextCreate() as LLVMContextRef
+    @usableFromInline let context = LLVMContextCreate() as LLVMContextRef
     
-    deinit {
+    @inlinable deinit {
         LLVMContextDispose(context)
     }
 }
