@@ -1,4 +1,5 @@
 import BFCommand
+import LLVMSwift
 
 public struct AbstractSyntaxTree: Equatable {
     

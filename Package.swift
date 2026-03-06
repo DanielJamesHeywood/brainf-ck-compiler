@@ -7,7 +7,7 @@ let package = Package(
     platforms: [.macOS("26.0")],
     products: [.executable(name: "bfc", targets: ["brainf*ck compiler"])],
     targets: [
-        .target(name: "BFAbstractSyntaxTree", dependencies: ["BFCommand"]),
+        .target(name: "BFAbstractSyntaxTree", dependencies: ["BFCommand", "LLVMSwift"]),
         .testTarget(name: "BFAbstractSyntaxTree tests", dependencies: ["BFAbstractSyntaxTree"]),
         .target(name: "BFCommand"),
         .testTarget(name: "BFCommand tests", dependencies: ["BFCommand"]),
