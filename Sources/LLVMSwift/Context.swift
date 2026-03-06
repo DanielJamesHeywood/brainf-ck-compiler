@@ -14,4 +14,8 @@ extension Context {
     @inlinable public func makeBuilder() -> Builder {
         Builder(context: self)
     }
+    
+    @inlinable public func makeModule(name: String) -> Module {
+        Module(name: name, context: self)
+    }
 }
