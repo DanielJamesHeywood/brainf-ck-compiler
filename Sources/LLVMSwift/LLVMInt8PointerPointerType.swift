@@ -6,7 +6,7 @@ public class LLVMInt8PointerPointerType {
     
     @usableFromInline let type: LLVMTypeRef
     
-    @inlinable public init(int8PointerType: LLVMInt8PointerType, addressSpace: AddressSpace = 0) {
-        self.type = LLVMPointerType(int8PointerType.type, addressSpace)
+    @inlinable public init(pointeeType: LLVMInt8PointerType, addressSpace: AddressSpace = 0) {
+        self.type = LLVMPointerType(pointeeType.type, addressSpace)
     }
 }
