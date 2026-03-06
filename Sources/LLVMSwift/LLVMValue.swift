@@ -1,15 +1,13 @@
 import LLVM
 
-public class LLVMInt8Pointer {
+public class LLVMValue {
     
     public class LLVMType {
         
-        public typealias AddressSpace = UInt32
-        
         @usableFromInline let type: LLVMTypeRef
         
-        @inlinable public init(pointeeType: LLVMInt8.LLVMType, addressSpace: AddressSpace = 0) {
-            self.type = LLVMPointerType(pointeeType.type, addressSpace)
+        @inlinable init(type: LLVMTypeRef) {
+            self.type = type
         }
     }
     
