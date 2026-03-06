@@ -2,14 +2,11 @@ import LLVM
 
 public class LLVMPointer<Pointee: LLVMValue>: LLVMValue {}
 
-extension LLVMPointer.LLVMType {
+public class LLVMPointerType<Pointee: LLVMValue>: LLVMType<LLVMPointer<Pointee>> {
     
     public typealias AddressSpace = UInt32
-}
-
-extension LLVMPointer {
     
-    @inlinable public static func makeType(pointeeType: Pointee.LLVMType, addressSpace: LLVMType.AddressSpace = 0) -> LLVMType {
-        LLVMType(type: LLVMPointerType(pointeeType.type, addressSpace))
+    @inlinable public convenience init(pointeeType: LLVMType<Pointee>, addressSpace: AddressSpace = 0) {
+        self.init(type: LLVM.LLVMPointerType(pointeeType.type, addressSpace))
     }
 }

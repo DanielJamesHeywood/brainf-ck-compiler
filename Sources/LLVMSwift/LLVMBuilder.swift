@@ -23,7 +23,7 @@ extension LLVMBuilder {
         LLVMInt8(value: LLVMBuildSub(builder, lhs.value, rhs.value, name))
     }
     
-    @inlinable public func buildLoad<Value: LLVMValue>(_ type: Value.LLVMType, from pointer: LLVMPointer<Value>, name: String = "") -> Value {
+    @inlinable public func buildLoad<Value: LLVMValue>(_ type: LLVMType<Value>, from pointer: LLVMPointer<Value>, name: String = "") -> Value {
         Value(value: LLVMBuildLoad2(builder, type.type, pointer.value, name))
     }
     
