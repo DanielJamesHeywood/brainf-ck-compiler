@@ -1,22 +1,6 @@
 import LLVM
 
-public class LLVMInt8 {
-    
-    public class LLVMType {
-        
-        @usableFromInline let type: LLVMTypeRef
-        
-        @inlinable init(context: LLVMContext) {
-            self.type = LLVMInt8TypeInContext(context.context)
-        }
-    }
-    
-    @usableFromInline let value: LLVMValueRef
-    
-    @inlinable init(value: LLVMValueRef) {
-        self.value = value
-    }
-}
+public class LLVMInt8: LLVMValue {}
 
 extension LLVMInt8 {
     
@@ -26,5 +10,12 @@ extension LLVMInt8 {
     
     @inlinable public convenience init(_ value: Int8, type: LLVMInt8.LLVMType) {
         self.init(UInt8(bitPattern: value), type: type)
+    }
+}
+
+extension LLVMInt8.LLVMType {
+    
+    @inlinable convenience init(context: LLVMContext) {
+        self.init(type: LLVMInt8TypeInContext(context.context))
     }
 }

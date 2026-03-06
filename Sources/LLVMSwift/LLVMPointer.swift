@@ -1,21 +1,12 @@
 import LLVM
 
-public class LLVMPointer {
+public class LLVMPointer<Pointee: LLVMValue>: LLVMValue {}
+
+extension LLVMPointer {
     
-    public class LLVMType {
-        
-        public typealias AddressSpace = UInt32
-        
-        @usableFromInline let type: LLVMTypeRef
-        
-        @inlinable public init(pointeeType: LLVMValue.LLVMType, addressSpace: AddressSpace = 0) {
-            self.type = LLVMPointerType(pointeeType.type, addressSpace)
-        }
-    }
+    public typealias AddressSpace = UInt32
     
-    @usableFromInline let value: LLVMValueRef
-    
-    @inlinable init(value: LLVMValueRef) {
-        self.value = value
+    @inlinable public static func makeType(pointeeType: Pointee.LLVMType, addressSpace: AddressSpace = 0) -> LLVMType {
+        LLVMType(type: LLVMPointerType(pointeeType.type, addressSpace))
     }
 }

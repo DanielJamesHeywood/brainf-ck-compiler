@@ -6,14 +6,14 @@ public class LLVMValue {
         
         @usableFromInline let type: LLVMTypeRef
         
-        @inlinable init(type: LLVMTypeRef) {
+        @inlinable required init(type: LLVMTypeRef) {
             self.type = type
         }
     }
     
     @usableFromInline let value: LLVMValueRef
     
-    @inlinable init(value: LLVMValueRef) {
+    @inlinable required init(value: LLVMValueRef) {
         self.value = value
     }
 }
