@@ -52,6 +52,14 @@ extension LLVMBuilder {
         LLVMInt8(value: LLVMBuildTrunc(builder, value.value, type.type, name))
     }
     
+    @inlinable public func buildZeroExtend(
+        _ value: LLVMInt8,
+        to type: LLVMInt32Type,
+        name: String = ""
+    ) -> LLVMInt8 {
+        LLVMInt8(value: LLVMBuildZExt(builder, value.value, type.type, name))
+    }
+    
     @inlinable @discardableResult public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
         returnType: LLVMType<Return>,
         function: LLVMFunction<Return, repeat each Argument>,
