@@ -1,0 +1,2 @@
+
+public class LLVMVoid: LLVMValue {}
