@@ -17,11 +17,15 @@ extension LLVMContext {
         LLVMBuilder(context: self)
     }
     
+    @inlinable public func makeInt8Type() -> LLVMInt8Type {
+        LLVMInt8Type(context: self)
+    }
+    
     @inlinable public func makeModule(name: String = "") -> LLVMModule {
         LLVMModule(name: name, context: self)
     }
     
-    @inlinable public func makeInt8Type() -> LLVMInt8Type {
-        LLVMInt8Type(context: self)
+    @inlinable public func makeVoidType() -> LLVMVoidType {
+        LLVMVoidType(context: self)
     }
 }
