@@ -28,8 +28,4 @@ extension LLVMContext {
     @inlinable public func makeModule(name: String = "") -> LLVMModule {
         LLVMModule(name: name, context: self)
     }
-    
-    @inlinable public func makeVoidType() -> LLVMVoidType {
-        LLVMVoidType(context: self)
-    }
 }
