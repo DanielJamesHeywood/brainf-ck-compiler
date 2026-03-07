@@ -30,4 +30,19 @@ extension LLVMBuilder {
     @inlinable public func buildStore<Value: LLVMValue>(_ value: Value, to pointer: LLVMPointer<Value>) {
         LLVMBuildStore(builder, value.value, pointer.value)
     }
+    
+    @inlinable public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
+        returnType: LLVMType<Return>,
+        function: LLVMFunction<Return, repeat each Argument>,
+        arguments: repeat each Argument,
+        name: String = ""
+    ) -> Return {
+        var argumentValues = [] as [LLVMValueRef?]
+        for argument in repeat each arguments {
+            argumentValues.append(argument.value)
+        }
+        return argumentValues.withUnsafeMutableBufferPointer { buffer in
+            Return(value: LLVMBuildCall2(builder, returnType.type, function.value, buffer.baseAddress, UInt32(buffer.count), name))
+        }
+    }
 }
