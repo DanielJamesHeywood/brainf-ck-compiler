@@ -56,8 +56,8 @@ extension LLVMBuilder {
         _ value: LLVMInt8,
         to type: LLVMInt32Type,
         name: String = ""
-    ) -> LLVMInt8 {
-        LLVMInt8(value: LLVMBuildZExt(builder, value.value, type.type, name))
+    ) -> LLVMInt32 {
+        LLVMInt32(value: LLVMBuildZExt(builder, value.value, type.type, name))
     }
     
     @inlinable @discardableResult public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
