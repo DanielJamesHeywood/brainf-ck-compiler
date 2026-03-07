@@ -30,7 +30,7 @@ extension LLVMBuilder {
     }
     
     @inlinable public func buildLoad<Value: LLVMValue>(
-        _ type: LLVMType<Value>,
+        type: LLVMType<Value>,
         from pointer: LLVMPointer<Value>,
         name: String = ""
     ) -> Value {
