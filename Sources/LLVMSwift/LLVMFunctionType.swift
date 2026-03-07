@@ -1,3 +1,2 @@
-import LLVM
 
-public class LLVMFunctionType<Return: LLVMValue, each Parameter: LLVMValue>: LLVMType<LLVMFunction<Return, repeat each Parameter>> {}
+public class LLVMFunctionType<Return: LLVMValue, each Argument: LLVMValue>: LLVMType<LLVMFunction<Return, repeat each Argument>> {}
