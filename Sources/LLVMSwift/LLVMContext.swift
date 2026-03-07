@@ -17,10 +17,6 @@ extension LLVMContext {
         LLVMBuilder(context: self)
     }
     
-    @inlinable public func makeInt1Type() -> LLVMInt1Type {
-        LLVMInt1Type(context: self)
-    }
-    
     @inlinable public func makeInt8Type() -> LLVMInt8Type {
         LLVMInt8Type(context: self)
     }
