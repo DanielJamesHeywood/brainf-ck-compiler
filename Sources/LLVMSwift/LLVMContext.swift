@@ -21,6 +21,10 @@ extension LLVMContext {
         LLVMInt8Type(context: self)
     }
     
+    @inlinable public func makeInt32Type() -> LLVMInt32Type {
+        LLVMInt32Type(context: self)
+    }
+    
     @inlinable public func makeModule(name: String = "") -> LLVMModule {
         LLVMModule(name: name, context: self)
     }
