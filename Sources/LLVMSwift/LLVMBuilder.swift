@@ -44,6 +44,14 @@ extension LLVMBuilder {
         LLVMBuildStore(builder, value.value, pointer.value)
     }
     
+    @inlinable public func buildTruncate(
+        _ value: LLVMInt32,
+        to type: LLVMInt8Type,
+        name: String = ""
+    ) -> LLVMInt8 {
+        LLVMInt8(value: LLVMBuildTrunc(builder, value.value, type.type, name))
+    }
+    
     @inlinable @discardableResult public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
         returnType: LLVMType<Return>,
         function: LLVMFunction<Return, repeat each Argument>,
