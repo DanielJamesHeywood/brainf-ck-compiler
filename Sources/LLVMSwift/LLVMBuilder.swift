@@ -60,21 +60,8 @@ extension LLVMBuilder {
         LLVMInt32(value: LLVMBuildZExt(builder, value.value, type.type, name))
     }
     
-    public enum Predicate {
-        case equalTo
-        case notEqualTo
-        case unsignedGreaterThan
-        case unsignedGreaterThanOrEqualTo
-        case unsignedLessThan
-        case unsignedLessThanOrEqualTo
-        case signedGreaterThan
-        case signedGreaterThanOrEqualTo
-        case signedLessThan
-        case signedLessThanOrEqualTo
-    }
-    
     @inlinable public func buildCompare(
-        using predicate: Predicate,
+        using predicate: LLVMPredicate,
         _ lhs: LLVMInt8, _ rhs: LLVMInt8,
         name: String = ""
     ) -> LLVMInt1 {
