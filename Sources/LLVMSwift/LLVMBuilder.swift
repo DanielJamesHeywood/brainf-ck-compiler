@@ -15,6 +15,10 @@ public class LLVMBuilder {
 
 extension LLVMBuilder {
     
+    @inlinable public func buildReturn() {
+        LLVMBuildRetVoid(builder)
+    }
+    
     @inlinable public func buildAdd(
         _ lhs: LLVMInt8, _ rhs: LLVMInt8,
         name: String = ""
