@@ -4,7 +4,7 @@ public class LLVMModule {
     
     @usableFromInline let module: LLVMModuleRef
     
-    @inlinable init(name: String, context: LLVMContext) {
+    @inlinable init(name: String = "", context: LLVMContext) {
         self.module = LLVMModuleCreateWithNameInContext(name, context.context)
     }
     
