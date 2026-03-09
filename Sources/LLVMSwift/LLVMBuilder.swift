@@ -47,6 +47,10 @@ extension LLVMBuilder {
         LLVMInt1(value: LLVMBuildICmp(builder, predicate.toIntPredicate(), lhs.value, rhs.value, name))
     }
     
+    @inlinable public func buildCompare(using predicate: LLVMPredicate, _ lhs: LLVMInt32, _ rhs: LLVMInt32, name: String = "") -> LLVMInt1 {
+        LLVMInt1(value: LLVMBuildICmp(builder, predicate.toIntPredicate(), lhs.value, rhs.value, name))
+    }
+    
     @inlinable @discardableResult public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
         returnType: LLVMType<Return>,
         function: LLVMFunction<Return, repeat each Argument>,
