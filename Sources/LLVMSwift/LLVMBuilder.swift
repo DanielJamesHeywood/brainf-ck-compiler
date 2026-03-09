@@ -15,43 +15,43 @@ public class LLVMBuilder {
 
 extension LLVMBuilder {
     
-    @inlinable public func buildReturn<Value: LLVMValue>(_ value: Value) {
+    @inlinable public func `return`<Value: LLVMValue>(_ value: Value) {
         LLVMBuildRet(builder, value.value)
     }
     
-    @inlinable public func buildAdd(_ lhs: LLVMInt8, _ rhs: LLVMInt8, name: String = "") -> LLVMInt8 {
+    @inlinable public func add(_ lhs: LLVMInt8, _ rhs: LLVMInt8, name: String = "") -> LLVMInt8 {
         LLVMInt8(value: LLVMBuildAdd(builder, lhs.value, rhs.value, name))
     }
     
-    @inlinable public func buildSubtract(_ lhs: LLVMInt8, _ rhs: LLVMInt8, name: String = "") -> LLVMInt8 {
+    @inlinable public func subtract(_ lhs: LLVMInt8, _ rhs: LLVMInt8, name: String = "") -> LLVMInt8 {
         LLVMInt8(value: LLVMBuildSub(builder, lhs.value, rhs.value, name))
     }
     
-    @inlinable public func buildLoad<Value: LLVMValue>(_ type: LLVMType<Value>, from pointer: LLVMPointer<Value>, name: String = "") -> Value {
+    @inlinable public func load<Value: LLVMValue>(_ type: LLVMType<Value>, from pointer: LLVMPointer<Value>, name: String = "") -> Value {
         Value(value: LLVMBuildLoad2(builder, type.type, pointer.value, name))
     }
     
-    @inlinable public func buildStore<Value: LLVMValue>(_ value: Value, to pointer: LLVMPointer<Value>) {
+    @inlinable public func store<Value: LLVMValue>(_ value: Value, to pointer: LLVMPointer<Value>) {
         LLVMBuildStore(builder, value.value, pointer.value)
     }
     
-    @inlinable public func buildTruncate(_ value: LLVMInt32, to type: LLVMInt8Type, name: String = "") -> LLVMInt8 {
+    @inlinable public func truncate(_ value: LLVMInt32, to type: LLVMInt8Type, name: String = "") -> LLVMInt8 {
         LLVMInt8(value: LLVMBuildTrunc(builder, value.value, type.type, name))
     }
     
-    @inlinable public func buildZeroExtend(_ value: LLVMInt8, to type: LLVMInt32Type, name: String = "") -> LLVMInt32 {
+    @inlinable public func zeroExtend(_ value: LLVMInt8, to type: LLVMInt32Type, name: String = "") -> LLVMInt32 {
         LLVMInt32(value: LLVMBuildZExt(builder, value.value, type.type, name))
     }
     
-    @inlinable public func buildCompare(using predicate: LLVMPredicate, _ lhs: LLVMInt8, _ rhs: LLVMInt8, name: String = "") -> LLVMInt1 {
+    @inlinable public func compare(using predicate: LLVMPredicate, _ lhs: LLVMInt8, _ rhs: LLVMInt8, name: String = "") -> LLVMInt1 {
         LLVMInt1(value: LLVMBuildICmp(builder, predicate.toIntPredicate(), lhs.value, rhs.value, name))
     }
     
-    @inlinable public func buildCompare(using predicate: LLVMPredicate, _ lhs: LLVMInt32, _ rhs: LLVMInt32, name: String = "") -> LLVMInt1 {
+    @inlinable public func compare(using predicate: LLVMPredicate, _ lhs: LLVMInt32, _ rhs: LLVMInt32, name: String = "") -> LLVMInt1 {
         LLVMInt1(value: LLVMBuildICmp(builder, predicate.toIntPredicate(), lhs.value, rhs.value, name))
     }
     
-    @inlinable @discardableResult public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
+    @inlinable @discardableResult public func call<Return: LLVMValue, each Argument: LLVMValue>(
         _ function: LLVMFunction<Return, repeat each Argument>,
         returning returnType: LLVMType<Return>,
         arguments: repeat each Argument,
