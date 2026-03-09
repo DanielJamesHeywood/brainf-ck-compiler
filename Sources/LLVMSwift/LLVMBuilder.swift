@@ -52,8 +52,8 @@ extension LLVMBuilder {
     }
     
     @inlinable @discardableResult public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
+        _ function: LLVMFunction<Return, repeat each Argument>,
         returning returnType: LLVMType<Return>,
-        function: LLVMFunction<Return, repeat each Argument>,
         arguments: repeat each Argument,
         name: String = ""
     ) -> Return {
