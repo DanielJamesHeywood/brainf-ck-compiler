@@ -35,6 +35,30 @@ extension LLVMBuilder {
         LLVMBuildStore(builder, value.value, pointer.value)
     }
     
+    @inlinable public func getElementPointer<Element: LLVMValue>(
+        to type: LLVMType<Element>,
+        indexing pointer: LLVMPointer<Element>,
+        at index: LLVMInt32,
+        name: String = ""
+    ) -> LLVMPointer<Element> {
+        var indexValue = index.value as LLVMValueRef?
+        return withUnsafeMutablePointer(to: &indexValue) { pointerToIndexValue in
+            LLVMPointer(value: LLVMBuildGEP2(builder, type.type, pointer.value, pointerToIndexValue, 1, name))
+        }
+    }
+    
+    @inlinable public func getElementPointer<Element: LLVMValue>(
+        to type: LLVMType<Element>,
+        indexing pointer: LLVMPointer<Element>,
+        at index: LLVMInt64,
+        name: String = ""
+    ) -> LLVMPointer<Element> {
+        var indexValue = index.value as LLVMValueRef?
+        return withUnsafeMutablePointer(to: &indexValue) { pointerToIndexValue in
+            LLVMPointer(value: LLVMBuildGEP2(builder, type.type, pointer.value, pointerToIndexValue, 1, name))
+        }
+    }
+    
     @inlinable public func truncate(_ value: LLVMInt32, to type: LLVMInt8Type, name: String = "") -> LLVMInt8 {
         LLVMInt8(value: LLVMBuildTrunc(builder, value.value, type.type, name))
     }
