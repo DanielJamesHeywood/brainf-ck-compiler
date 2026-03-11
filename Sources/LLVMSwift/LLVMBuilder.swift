@@ -39,8 +39,8 @@ extension LLVMBuilder {
         to type: LLVMType<Element>,
         indexing pointer: LLVMPointer<Element>,
         at index: LLVMInt32,
-        with noWrapFlags: LLVMGEPNoWrapFlags = [],
-        name: String = ""
+        name: String = "",
+        with noWrapFlags: LLVMGEPNoWrapFlags = []
     ) -> LLVMPointer<Element> {
         var rawIndex = index.rawValue as LLVMValueRef?
         return withUnsafeMutablePointer(to: &rawIndex) { pointerToRawIndex in
@@ -62,8 +62,8 @@ extension LLVMBuilder {
         to type: LLVMType<Element>,
         indexing pointer: LLVMPointer<Element>,
         at index: LLVMInt64,
-        with noWrapFlags: LLVMGEPNoWrapFlags = [],
-        name: String = ""
+        name: String = "",
+        with noWrapFlags: LLVMGEPNoWrapFlags = []
     ) -> LLVMPointer<Element> {
         var rawIndex = index.rawValue as LLVMValueRef?
         return withUnsafeMutablePointer(to: &rawIndex) { pointerToRawIndex in
