@@ -19,6 +19,10 @@ extension LLVMBuilder {
         LLVMBuildRet(rawBuilder, value.rawValue)
     }
     
+    @inlinable public func branch(if condition: LLVMInt1, thenTo thenBlock: LLVMBasicBlock, elseTo elseBlock: LLVMBasicBlock) {
+        LLVMBuildCondBr(rawBuilder, condition.rawValue, thenBlock.rawBasicBlock, elseBlock.rawBasicBlock)
+    }
+    
     @inlinable public func add(_ lhs: LLVMInt8, _ rhs: LLVMInt8, name: String = "") -> LLVMInt8 {
         LLVMInt8(rawValue: LLVMBuildAdd(rawBuilder, lhs.rawValue, rhs.rawValue, name))
     }
