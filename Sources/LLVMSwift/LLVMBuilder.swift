@@ -39,11 +39,12 @@ extension LLVMBuilder {
         to type: LLVMType<Element>,
         indexing pointer: LLVMPointer<Element>,
         at index: LLVMInt32,
+        with flags: LLVMGEPFlags = [],
         name: String = ""
     ) -> LLVMPointer<Element> {
         var indexValue = index.value as LLVMValueRef?
         return withUnsafeMutablePointer(to: &indexValue) { pointerToIndexValue in
-            LLVMPointer(value: LLVMBuildGEP2(builder, type.type, pointer.value, pointerToIndexValue, 1, name))
+            LLVMPointer(value: LLVMBuildGEPWithNoWrapFlags(builder, type.type, pointer.value, pointerToIndexValue, 1, name, UInt32(flags.rawValue)))
         }
     }
     
@@ -51,11 +52,12 @@ extension LLVMBuilder {
         to type: LLVMType<Element>,
         indexing pointer: LLVMPointer<Element>,
         at index: LLVMInt64,
+        with flags: LLVMGEPFlags = [],
         name: String = ""
     ) -> LLVMPointer<Element> {
         var indexValue = index.value as LLVMValueRef?
         return withUnsafeMutablePointer(to: &indexValue) { pointerToIndexValue in
-            LLVMPointer(value: LLVMBuildGEP2(builder, type.type, pointer.value, pointerToIndexValue, 1, name))
+            LLVMPointer(value: LLVMBuildGEPWithNoWrapFlags(builder, type.type, pointer.value, pointerToIndexValue, 1, name, UInt32(flags.rawValue)))
         }
     }
     
