@@ -2,9 +2,9 @@ import LLVM
 
 public class LLVMValue {
     
-    @usableFromInline let value: LLVMValueRef
+    @usableFromInline let rawValue: LLVMValueRef
     
-    @inlinable required init(value: LLVMValueRef) {
-        self.value = value
+    @inlinable required init(rawValue: LLVMValueRef) {
+        self.rawValue = rawValue
     }
 }

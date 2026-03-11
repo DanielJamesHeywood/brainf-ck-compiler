@@ -2,13 +2,13 @@ import LLVM
 
 public class LLVMModule {
     
-    @usableFromInline let module: LLVMModuleRef
+    @usableFromInline let rawModule: LLVMModuleRef
     
     @inlinable init(name: String = "", context: LLVMContext) {
-        self.module = LLVMModuleCreateWithNameInContext(name, context.context)
+        self.rawModule = LLVMModuleCreateWithNameInContext(name, context.rawContext)
     }
     
     @inlinable deinit {
-        LLVMDisposeModule(module)
+        LLVMDisposeModule(rawModule)
     }
 }

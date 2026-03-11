@@ -2,12 +2,12 @@ import LLVM
 
 public class LLVMContext {
     
-    @usableFromInline let context = LLVMContextCreate() as LLVMContextRef
+    @usableFromInline let rawContext = LLVMContextCreate() as LLVMContextRef
     
     @inlinable public init() {}
     
     @inlinable deinit {
-        LLVMContextDispose(context)
+        LLVMContextDispose(rawContext)
     }
 }
 

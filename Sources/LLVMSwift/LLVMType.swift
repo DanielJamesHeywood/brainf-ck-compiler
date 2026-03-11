@@ -2,9 +2,9 @@ import LLVM
 
 public class LLVMType<Value: LLVMValue> {
     
-    @usableFromInline let type: LLVMTypeRef
+    @usableFromInline let rawType: LLVMTypeRef
     
-    @inlinable required init(type: LLVMTypeRef) {
-        self.type = type
+    @inlinable required init(rawType: LLVMTypeRef) {
+        self.rawType = rawType
     }
 }
