@@ -8,4 +8,3 @@ public class LLVMPointerType<Pointee: LLVMValue>: LLVMType<LLVMPointer<Pointee>>
         self.init(rawType: LLVM.LLVMPointerType(pointeeType.rawType, UInt32(addressSpace)))
     }
 }
-
