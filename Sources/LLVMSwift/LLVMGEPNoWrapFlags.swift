@@ -7,6 +7,9 @@ public struct LLVMGEPNoWrapFlags: OptionSet, Sendable {
     public init(rawValue: Int) {
         self.rawValue = rawValue
     }
+}
+
+extension LLVMGEPNoWrapFlags {
     
     public static let inBounds = LLVMGEPNoWrapFlags(rawValue: LLVMGEPFlagInBounds)
     
