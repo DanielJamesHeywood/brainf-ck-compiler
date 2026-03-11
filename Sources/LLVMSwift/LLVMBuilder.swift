@@ -39,7 +39,7 @@ extension LLVMBuilder {
         to type: LLVMType<Element>,
         indexing pointer: LLVMPointer<Element>,
         at index: LLVMInt32,
-        with flags: LLVMGEPFlags = [],
+        with noWrapFlags: LLVMGEPNoWrapFlags = [],
         name: String = ""
     ) -> LLVMPointer<Element> {
         var rawIndex = index.rawValue as LLVMValueRef?
@@ -52,7 +52,7 @@ extension LLVMBuilder {
                     pointerToRawIndex,
                     1,
                     name,
-                    UInt32(flags.rawValue)
+                    UInt32(noWrapFlags.rawValue)
                 )
             )
         }
@@ -62,7 +62,7 @@ extension LLVMBuilder {
         to type: LLVMType<Element>,
         indexing pointer: LLVMPointer<Element>,
         at index: LLVMInt64,
-        with flags: LLVMGEPFlags = [],
+        with noWrapFlags: LLVMGEPNoWrapFlags = [],
         name: String = ""
     ) -> LLVMPointer<Element> {
         var rawIndex = index.rawValue as LLVMValueRef?
@@ -75,7 +75,7 @@ extension LLVMBuilder {
                     pointerToRawIndex,
                     1,
                     name,
-                    UInt32(flags.rawValue)
+                    UInt32(noWrapFlags.rawValue)
                 )
             )
         }
