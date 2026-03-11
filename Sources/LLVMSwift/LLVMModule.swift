@@ -12,3 +12,13 @@ public class LLVMModule {
         LLVMDisposeModule(rawModule)
     }
 }
+
+extension LLVMModule {
+    
+    @inlinable public func makeFunction<Return: LLVMValue, each Parameter: LLVMValue>(
+        name: String = "",
+        type: LLVMFunctionType<Return, repeat each Parameter>
+    ) -> LLVMFunction<Return, repeat each Parameter> {
+        LLVMFunction(module: self, name: name, type: type)
+    }
+}
