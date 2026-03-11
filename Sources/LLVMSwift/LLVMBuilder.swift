@@ -98,8 +98,8 @@ extension LLVMBuilder {
     }
     
     @inlinable @discardableResult public func call<Return: LLVMValue, each Argument: LLVMValue>(
-        _ function: LLVMFunction<Return, repeat each Argument>,
         returning returnType: LLVMType<Return>,
+        _ function: LLVMFunction<Return, repeat each Argument>,
         passing arguments: repeat each Argument,
         name: String = ""
     ) -> Return {
