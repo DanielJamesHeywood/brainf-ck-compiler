@@ -2,9 +2,11 @@ import LLVM
 
 public class LLVMContext {
     
-    @usableFromInline let rawContext = LLVMContextCreate() as LLVMContextRef
+    @usableFromInline let rawContext: LLVMContextRef
     
-    @inlinable public init() {}
+    @inlinable public init() {
+        self.rawContext = LLVMContextCreate()
+    }
     
     @inlinable deinit {
         LLVMContextDispose(rawContext)
@@ -25,7 +27,11 @@ extension LLVMContext {
         LLVMInt32Type(context: self)
     }
     
+    @inlinable public func makeInt64Type() -> LLVMInt64Type {
+        LLVMInt64Type(context: self)
+    }
+    
     @inlinable public func makeModule(name: String = "") -> LLVMModule {
-        LLVMModule(name: name, context: self)
+        LLVMModule(context: self, name: name)
     }
 }
