@@ -4,7 +4,7 @@ public class LLVMType<Value: LLVMValue> {
     
     @usableFromInline let rawType: LLVMTypeRef
     
-    @inlinable required init(rawType: LLVMTypeRef) {
+    @inlinable init(rawType: LLVMTypeRef) {
         self.rawType = rawType
     }
 }
