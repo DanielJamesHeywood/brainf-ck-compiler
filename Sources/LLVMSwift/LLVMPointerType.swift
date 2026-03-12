@@ -1,10 +1,10 @@
 import LLVM
 
-public class LLVMPointerType<Pointee: LLVMValue>: LLVMType<LLVMPointer<Pointee>> {
+public class LLVMPointerType<Element: LLVMValue>: LLVMType<LLVMPointer<Element>> {
     
-    public typealias AddressSpace = Int
+    public typealias AddressSpace = UInt32
     
-    @inlinable public convenience init(pointeeType: LLVMType<Pointee>, addressSpace: AddressSpace = 0) {
-        self.init(rawType: LLVM.LLVMPointerType(pointeeType.rawType, UInt32(addressSpace)))
+    @inlinable public convenience init(elementType: LLVMType<Element>, addressSpace: AddressSpace = 0) {
+        self.init(rawType: LLVM.LLVMPointerType(elementType.rawType, addressSpace))
     }
 }

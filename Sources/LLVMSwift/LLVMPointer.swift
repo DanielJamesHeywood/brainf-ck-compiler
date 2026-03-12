@@ -1,2 +1,2 @@
 
-public class LLVMPointer<Pointee: LLVMValue>: LLVMValue {}
+public class LLVMPointer<Element: LLVMValue>: LLVMValue {}
