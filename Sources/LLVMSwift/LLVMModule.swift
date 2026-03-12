@@ -21,4 +21,10 @@ extension LLVMModule {
     ) -> LLVMFunction<Return, repeat each Parameter> {
         LLVMFunction(module: self, name: name, type: type)
     }
+    
+    public typealias AddressSpace = Int
+    
+    @inlinable public func makeGlobal<Value: LLVMValue>(type: LLVMType<Value>, name: String = "", addressSpace: AddressSpace = 0) -> Value {
+        Value(rawValue: LLVMAddGlobalInAddressSpace(rawModule, type.rawType, name, UInt32(addressSpace)))
+    }
 }
