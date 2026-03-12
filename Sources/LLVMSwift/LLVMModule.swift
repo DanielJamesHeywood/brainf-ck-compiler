@@ -24,7 +24,11 @@ extension LLVMModule {
     
     public typealias AddressSpace = Int
     
-    @inlinable public func makeGlobal<Value: LLVMValue>(type: LLVMType<Value>, name: String = "", addressSpace: AddressSpace = 0) -> Value {
-        Value(rawValue: LLVMAddGlobalInAddressSpace(rawModule, type.rawType, name, UInt32(addressSpace)))
+    @inlinable public func makeGlobal<Value: LLVMValue>(
+        type: LLVMType<Value>,
+        name: String = "",
+        addressSpace: AddressSpace = 0
+    ) -> LLVMPointer<Value> {
+        LLVMPointer(rawValue: LLVMAddGlobalInAddressSpace(rawModule, type.rawType, name, UInt32(addressSpace)))
     }
 }
