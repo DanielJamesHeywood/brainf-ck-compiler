@@ -4,8 +4,8 @@ public class LLVMBuilder {
     
     @usableFromInline let rawBuilder: LLVMBuilderRef
     
-    @inlinable init(context: LLVMContext) {
-        self.rawBuilder = LLVMCreateBuilderInContext(context.rawContext)
+    @inlinable init(rawBuilder: LLVMBuilderRef) {
+        self.rawBuilder = rawBuilder
     }
     
     @inlinable deinit {
