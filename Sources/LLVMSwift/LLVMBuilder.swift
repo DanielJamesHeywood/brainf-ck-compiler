@@ -39,12 +39,12 @@ extension LLVMBuilder {
         LLVMBuildStore(rawBuilder, value.rawValue, pointer.rawValue)
     }
     
-    @inlinable public func getElementPointer<Element: LLVMValue>(
+    @inlinable public func buildGetElementPointer<Element: LLVMValue>(
         to type: LLVMType<Element>,
         indexing pointer: LLVMPointer<Element>,
         at index: LLVMInt32,
         name: String = "",
-        with noWrapFlags: LLVMGEPNoWrapFlags = []
+        noWrapFlags: [LLVMNoWrapFlag] = []
     ) -> LLVMPointer<Element> {
         var rawIndex = index.rawValue as LLVMValueRef?
         return withUnsafeMutablePointer(to: &rawIndex) { pointerToRawIndex in
@@ -56,18 +56,18 @@ extension LLVMBuilder {
                     pointerToRawIndex,
                     1,
                     name,
-                    UInt32(noWrapFlags.rawValue)
+                    noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
                 )
             )
         }
     }
     
-    @inlinable public func getElementPointer<Element: LLVMValue>(
+    @inlinable public func buildGetElementPointer<Element: LLVMValue>(
         to type: LLVMType<Element>,
         indexing pointer: LLVMPointer<Element>,
         at index: LLVMInt64,
         name: String = "",
-        with noWrapFlags: LLVMGEPNoWrapFlags = []
+        noWrapFlags: [LLVMNoWrapFlag] = []
     ) -> LLVMPointer<Element> {
         var rawIndex = index.rawValue as LLVMValueRef?
         return withUnsafeMutablePointer(to: &rawIndex) { pointerToRawIndex in
@@ -79,7 +79,7 @@ extension LLVMBuilder {
                     pointerToRawIndex,
                     1,
                     name,
-                    UInt32(noWrapFlags.rawValue)
+                    noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
                 )
             )
         }
