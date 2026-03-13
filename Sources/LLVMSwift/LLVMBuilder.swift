@@ -31,11 +31,11 @@ extension LLVMBuilder {
         LLVMInt8(rawValue: LLVMBuildSub(rawBuilder, lhs.rawValue, rhs.rawValue, name))
     }
     
-    @inlinable public func load<Value: LLVMValue>(_ type: LLVMType<Value>, from pointer: LLVMPointer<Value>, name: String = "") -> Value {
+    @inlinable public func buildLoad<Value: LLVMValue>(of type: LLVMType<Value>, from pointer: LLVMPointer<Value>, name: String = "") -> Value {
         Value(rawValue: LLVMBuildLoad2(rawBuilder, type.rawType, pointer.rawValue, name))
     }
     
-    @inlinable public func store<Value: LLVMValue>(_ value: Value, to pointer: LLVMPointer<Value>) {
+    @inlinable public func buildStore<Value: LLVMValue>(of value: Value, to pointer: LLVMPointer<Value>) {
         LLVMBuildStore(rawBuilder, value.rawValue, pointer.rawValue)
     }
     
