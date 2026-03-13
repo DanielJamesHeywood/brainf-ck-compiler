@@ -101,10 +101,11 @@ extension LLVMBuilder {
         LLVMInt1(rawValue: LLVMBuildICmp(rawBuilder, predicate.toIntPredicate(), lhs.rawValue, rhs.rawValue, name))
     }
     
-    @inlinable @discardableResult public func call<Return: LLVMValue, each Argument: LLVMValue>(
+    @inlinable @discardableResult public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
+        to function: LLVMFunction<Return, repeat each Argument>,
         returning returnType: LLVMType<Return>,
-        _ function: LLVMFunction<Return, repeat each Argument>,
         passing arguments: repeat each Argument,
+        returning returnType: LLVMType<Return>,
         name: String = ""
     ) -> Return {
         var rawArguments = [] as [LLVMValueRef?]
