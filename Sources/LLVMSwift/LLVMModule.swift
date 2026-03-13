@@ -22,13 +22,13 @@ extension LLVMModule {
         LLVMFunction(rawValue: LLVMAddFunction(rawModule, name, type.rawType))
     }
     
-    public typealias AddressSpace = Int
+    public typealias AddressSpace = UInt32
     
-    @inlinable public func makeGlobal<Value: LLVMValue>(
+    @inlinable public func addGlobal<Value: LLVMValue>(
         type: LLVMType<Value>,
         name: String = "",
         addressSpace: AddressSpace = 0
     ) -> LLVMPointer<Value> {
-        LLVMPointer(rawValue: LLVMAddGlobalInAddressSpace(rawModule, type.rawType, name, UInt32(addressSpace)))
+        LLVMPointer(rawValue: LLVMAddGlobalInAddressSpace(rawModule, type.rawType, name, addressSpace))
     }
 }
