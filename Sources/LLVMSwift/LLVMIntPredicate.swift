@@ -1,6 +1,6 @@
 import LLVM
 
-public enum LLVMPredicate {
+public enum LLVMIntPredicate {
     case equalTo
     case notEqualTo
     case unsignedGreaterThan
@@ -13,9 +13,9 @@ public enum LLVMPredicate {
     case signedLessThanOrEqualTo
 }
 
-extension LLVMPredicate {
+extension LLVMIntPredicate {
     
-    @inlinable func toIntPredicate() -> LLVMIntPredicate {
+    @inlinable var rawIntPredicate: LLVM.LLVMIntPredicate {
         switch self {
         case .equalTo:
             return LLVMIntEQ

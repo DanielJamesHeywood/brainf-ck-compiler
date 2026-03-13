@@ -93,12 +93,12 @@ extension LLVMBuilder {
         LLVMInt32(rawValue: LLVMBuildZExt(rawBuilder, value.rawValue, type.rawType, name))
     }
     
-    @inlinable public func compare(using predicate: LLVMPredicate, _ lhs: LLVMInt8, _ rhs: LLVMInt8, name: String = "") -> LLVMInt1 {
-        LLVMInt1(rawValue: LLVMBuildICmp(rawBuilder, predicate.toIntPredicate(), lhs.rawValue, rhs.rawValue, name))
+    @inlinable public func buildComparison(of lhs: LLVMInt8, to rhs: LLVMInt8, using predicate: LLVMIntPredicate, name: String = "") -> LLVMInt1 {
+        LLVMInt1(rawValue: LLVMBuildICmp(rawBuilder, predicate.rawIntPredicate, lhs.rawValue, rhs.rawValue, name))
     }
     
-    @inlinable public func compare(using predicate: LLVMPredicate, _ lhs: LLVMInt32, _ rhs: LLVMInt32, name: String = "") -> LLVMInt1 {
-        LLVMInt1(rawValue: LLVMBuildICmp(rawBuilder, predicate.toIntPredicate(), lhs.rawValue, rhs.rawValue, name))
+    @inlinable public func buildComparison(of lhs: LLVMInt32, to rhs: LLVMInt32, using predicate: LLVMIntPredicate, name: String = "") -> LLVMInt1 {
+        LLVMInt1(rawValue: LLVMBuildICmp(rawBuilder, predicate.rawIntPredicate, lhs.rawValue, rhs.rawValue, name))
     }
     
     @inlinable @discardableResult public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
