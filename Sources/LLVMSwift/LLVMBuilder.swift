@@ -23,11 +23,11 @@ extension LLVMBuilder {
         LLVMBuildCondBr(rawBuilder, condition.rawValue, thenBlock.rawBasicBlock, elseBlock.rawBasicBlock)
     }
     
-    @inlinable public func buildAddition(of lhs: LLVMInt8, to rhs: LLVMInt8, name: String = "") -> LLVMInt8 {
+    @inlinable public func buildAddition(of rhs: LLVMInt8, to lhs: LLVMInt8, name: String = "") -> LLVMInt8 {
         LLVMInt8(rawValue: LLVMBuildAdd(rawBuilder, lhs.rawValue, rhs.rawValue, name))
     }
     
-    @inlinable public func subtract(_ lhs: LLVMInt8, _ rhs: LLVMInt8, name: String = "") -> LLVMInt8 {
+    @inlinable public func buildSubtraction(of rhs: LLVMInt8, from lhs: LLVMInt8, name: String = "") -> LLVMInt8 {
         LLVMInt8(rawValue: LLVMBuildSub(rawBuilder, lhs.rawValue, rhs.rawValue, name))
     }
     
