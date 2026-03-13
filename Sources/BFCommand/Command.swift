@@ -1,13 +1,13 @@
 
 public enum Command {
-case incrementPointer
-case decrementPointer
-case incrementByte
-case decrementByte
-case outputByte
-case inputByte
-case startLoop
-case endLoop
+    case incrementPointer
+    case decrementPointer
+    case incrementByte
+    case decrementByte
+    case outputByte
+    case inputByte
+    case startLoop
+    case endLoop
 }
 
 extension Command {

@@ -4,18 +4,18 @@ import LLVMSwift
 public struct AbstractSyntaxTree: Equatable {
     
     public enum Node: Equatable {
-    case incrementPointer
-    case decrementPointer
-    case incrementByte
-    case decrementByte
-    case outputByte
-    case inputByte
-    case loop([Node])
+        case incrementPointer
+        case decrementPointer
+        case incrementByte
+        case decrementByte
+        case outputByte
+        case inputByte
+        case loop([Node])
     }
     
     public enum InitializationError: Error {
-    case unmatchedStartLoop
-    case unmatchedEndLoop
+        case unmatchedStartLoop
+        case unmatchedEndLoop
     }
     
     public let root: [Node]
