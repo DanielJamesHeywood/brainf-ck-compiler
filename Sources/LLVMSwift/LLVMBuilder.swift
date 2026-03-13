@@ -85,11 +85,11 @@ extension LLVMBuilder {
         }
     }
     
-    @inlinable public func truncate(_ value: LLVMInt32, to type: LLVMInt8Type, name: String = "") -> LLVMInt8 {
+    @inlinable public func buildTruncation(of value: LLVMInt32, to type: LLVMInt8Type, name: String = "") -> LLVMInt8 {
         LLVMInt8(rawValue: LLVMBuildTrunc(rawBuilder, value.rawValue, type.rawType, name))
     }
     
-    @inlinable public func zeroExtend(_ value: LLVMInt8, to type: LLVMInt32Type, name: String = "") -> LLVMInt32 {
+    @inlinable public func buildZeroExtension(of value: LLVMInt8, to type: LLVMInt32Type, name: String = "") -> LLVMInt32 {
         LLVMInt32(rawValue: LLVMBuildZExt(rawBuilder, value.rawValue, type.rawType, name))
     }
     
