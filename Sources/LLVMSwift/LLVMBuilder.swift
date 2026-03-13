@@ -15,7 +15,7 @@ public class LLVMBuilder {
 
 extension LLVMBuilder {
     
-    @inlinable public func `return`<Value: LLVMValue>(_ value: Value) {
+    @inlinable public func buildReturn<Value: LLVMValue>(of value: Value) {
         LLVMBuildRet(rawBuilder, value.rawValue)
     }
     
