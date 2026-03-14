@@ -15,6 +15,13 @@ public class LLVMContext {
 
 extension LLVMContext {
     
+    @inlinable public func appendBasicBlock<Return: LLVMValue, each Parameter: LLVMValue>(
+        to function: LLVMFunction<Return, repeat each Parameter>,
+        name: String = ""
+    ) -> LLVMBasicBlock {
+        LLVMBasicBlock(rawBasicBlock: LLVMAppendBasicBlockInContext(rawContext, function.rawValue, name))
+    }
+    
     @inlinable public func makeBuilder() -> LLVMBuilder {
         LLVMBuilder(rawBuilder: LLVMCreateBuilderInContext(rawContext))
     }
