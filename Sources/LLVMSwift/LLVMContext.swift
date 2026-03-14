@@ -22,6 +22,10 @@ extension LLVMContext {
         LLVMBasicBlock(rawBasicBlock: LLVMAppendBasicBlockInContext(rawContext, function.rawValue, name))
     }
     
+    @inlinable public func makeBasicBlock(name: String = "") -> LLVMBasicBlock {
+        LLVMBasicBlock(rawBasicBlock: LLVMCreateBasicBlockInContext(rawContext, name))
+    }
+    
     @inlinable public func makeBuilder() -> LLVMBuilder {
         LLVMBuilder(rawBuilder: LLVMCreateBuilderInContext(rawContext))
     }
