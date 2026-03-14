@@ -15,6 +15,13 @@ public class LLVMBuilder {
 
 extension LLVMBuilder {
     
+    @inlinable public func position(atEndOf block: LLVMBasicBlock) {
+        LLVMPositionBuilderAtEnd(rawBuilder, block.rawBasicBlock)
+    }
+}
+
+extension LLVMBuilder {
+    
     @inlinable public func buildReturn<Value: LLVMValue>(of value: Value) {
         LLVMBuildRet(rawBuilder, value.rawValue)
     }
