@@ -1,8 +1,6 @@
 # Brainf*ck Compiler
 
-```
-/opt/homebrew/lib/pkgconfig/llvm.pc
-```
+`llvm.pc` `/opt/homebrew/lib/pkgconfig/`
 ```
 Name: llvm
 Libs: -L/opt/homebrew/opt/llvm/lib -lLLVM-22
