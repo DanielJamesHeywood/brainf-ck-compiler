@@ -69,29 +69,6 @@ extension LLVMBuilder {
         }
     }
     
-    @inlinable public func buildGetElementPointer<Element: LLVMValue>(
-        to type: LLVMType<Element>,
-        indexing pointer: LLVMPointer<Element>,
-        at index: LLVMInt64,
-        name: String = "",
-        noWrapFlags: [LLVMNoWrapFlag] = []
-    ) -> LLVMPointer<Element> {
-        var rawIndex = index.rawValue as LLVMValueRef?
-        return withUnsafeMutablePointer(to: &rawIndex) { pointerToRawIndex in
-            LLVMPointer(
-                rawValue: LLVMBuildGEPWithNoWrapFlags(
-                    rawBuilder,
-                    type.rawType,
-                    pointer.rawValue,
-                    pointerToRawIndex,
-                    1,
-                    name,
-                    noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
-                )
-            )
-        }
-    }
-    
     @inlinable public func buildTruncation(of value: LLVMInt32, to type: LLVMInt8Type, name: String = "") -> LLVMInt8 {
         LLVMInt8(rawValue: LLVMBuildTrunc(rawBuilder, value.rawValue, type.rawType, name))
     }

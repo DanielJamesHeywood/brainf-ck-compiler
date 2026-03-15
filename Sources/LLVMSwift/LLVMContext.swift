@@ -38,10 +38,6 @@ extension LLVMContext {
         LLVMInt32Type(rawType: LLVMInt32TypeInContext(rawContext))
     }
     
-    @inlinable public func makeInt64Type() -> LLVMInt64Type {
-        LLVMInt64Type(rawType: LLVMInt64TypeInContext(rawContext))
-    }
-    
     @inlinable public func makeModule(id: String = "") -> LLVMModule {
         LLVMModule(rawModule: LLVMModuleCreateWithNameInContext(id, rawContext))
     }
