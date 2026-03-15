@@ -52,3 +52,7 @@ public struct AbstractSyntaxTree: Equatable {
         self.root = ancestors[0]
     }
 }
+
+extension AbstractSyntaxTree {}
+
+extension AbstractSyntaxTree.Node {}
