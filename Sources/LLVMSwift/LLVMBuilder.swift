@@ -108,6 +108,15 @@ extension LLVMBuilder {
         LLVMInt1(rawValue: LLVMBuildICmp(rawBuilder, predicate.rawIntPredicate, lhs.rawValue, rhs.rawValue, name))
     }
     
+    @inlinable public func buildComparison<Element: LLVMValue>(
+        of lhs: LLVMPointer<Element>,
+        to rhs: LLVMPointer<Element>,
+        using predicate: LLVMIntPredicate,
+        name: String = ""
+    ) -> LLVMInt1 {
+        LLVMInt1(rawValue: LLVMBuildICmp(rawBuilder, predicate.rawIntPredicate, lhs.rawValue, rhs.rawValue, name))
+    }
+    
     @inlinable @discardableResult public func buildCall<Return: LLVMValue, each Argument: LLVMValue>(
         to function: LLVMFunction<Return, repeat each Argument>,
         passing arguments: repeat each Argument,
