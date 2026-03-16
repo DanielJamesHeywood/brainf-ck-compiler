@@ -69,7 +69,8 @@ extension AbstractSyntaxTree.Node {
     ) {
         switch self {
         case .incrementPointer:
-            let successBlock = context.appendBasicBlock(to: main, name: "success")
+            let successBlock = context.makeBasicBlock(name: "success")
+            main.appendBasicBlock(successBlock)
             let pointer = builder.buildLoad(of: LLVMPointerType(elementType: context.makeInt8Type()), from: pointerToPointer, name: "pointer")
             let incrementedPointer = builder.buildGetElementPointer(
                 to: context.makeInt8Type(),
@@ -93,7 +94,8 @@ extension AbstractSyntaxTree.Node {
             builder.position(atEndOf: successBlock)
             builder.buildStore(of: incrementedPointer, to: pointerToPointer)
         case .decrementPointer:
-            let successBlock = context.appendBasicBlock(to: main, name: "success")
+            let successBlock = context.makeBasicBlock(name: "success")
+            main.appendBasicBlock(successBlock)
             let pointer = builder.buildLoad(of: LLVMPointerType(elementType: context.makeInt8Type()), from: pointerToPointer, name: "pointer")
             let decrementedPointerWillBeInBounds = builder.buildComparison(
                 of: pointer,
@@ -135,7 +137,8 @@ extension AbstractSyntaxTree.Node {
             )
             builder.buildStore(of: decrementedByte, to: pointer)
         case .outputByte:
-            let successBlock = context.appendBasicBlock(to: main, name: "success")
+            let successBlock = context.makeBasicBlock(name: "success")
+            main.appendBasicBlock(successBlock)
             let pointer = builder.buildLoad(of: LLVMPointerType(elementType: context.makeInt8Type()), from: pointerToPointer, name: "pointer")
             let byte = builder.buildLoad(of: context.makeInt8Type(), from: pointer, name: "byte")
             let zeroExtendedByte = builder.buildZeroExtension(of: byte, to: context.makeInt32Type(), name: "zeroextendedbyte")
@@ -154,7 +157,8 @@ extension AbstractSyntaxTree.Node {
             builder.buildBranch(to: failureBlock, if: putcharReturnedEOF, elseTo: successBlock)
             builder.position(atEndOf: successBlock)
         case .inputByte:
-            let successBlock = context.appendBasicBlock(to: main, name: "success")
+            let successBlock = context.makeBasicBlock(name: "success")
+            main.appendBasicBlock(successBlock)
             let getcharReturnValue = builder.buildCall(to: getchar, returning: context.makeInt32Type(), name: "getcharreturnvalue")
             let getcharReturnedEOF = builder.buildComparison(
                 of: getcharReturnValue,
@@ -168,8 +172,9 @@ extension AbstractSyntaxTree.Node {
             let byte = builder.buildTruncation(of: getcharReturnValue, to: context.makeInt8Type(), name: "byte")
             builder.buildStore(of: byte, to: pointer)
         case let .loop(children):
-            let body = context.appendBasicBlock(to: main, name: "body")
-            let exit = context.makeBasicBlock(name: "exit")
+            let bodyBlock = context.makeBasicBlock(name: "body")
+            let exitBlock = context.makeBasicBlock(name: "exit")
+            main.appendBasicBlock(bodyBlock)
             let pointerBeforeBody = builder.buildLoad(
                 of: LLVMPointerType(elementType: context.makeInt8Type()),
                 from: pointerToPointer,
@@ -182,8 +187,8 @@ extension AbstractSyntaxTree.Node {
                 using: .equalTo,
                 name: "byteiszero"
             )
-            builder.buildBranch(to: exit, if: byteIsZeroBeforeBody, elseTo: body)
-            builder.position(atEndOf: exit)
+            builder.buildBranch(to: exitBlock, if: byteIsZeroBeforeBody, elseTo: bodyBlock)
+            builder.position(atEndOf: bodyBlock)
             for child in children {
                 child.buildLLVM(
                     context: context,
@@ -196,7 +201,7 @@ extension AbstractSyntaxTree.Node {
                     bytes: bytes
                 )
             }
-            main.appendBasicBlock(exit)
+            main.appendBasicBlock(exitBlock)
             let pointerAfterBody = builder.buildLoad(
                 of: LLVMPointerType(elementType: context.makeInt8Type()),
                 from: pointerToPointer,
@@ -209,8 +214,8 @@ extension AbstractSyntaxTree.Node {
                 using: .equalTo,
                 name: "byteiszero"
             )
-            builder.buildBranch(to: exit, if: byteIsZeroAfterBody, elseTo: body)
-            builder.position(atEndOf: exit)
+            builder.buildBranch(to: exitBlock, if: byteIsZeroAfterBody, elseTo: bodyBlock)
+            builder.position(atEndOf: exitBlock)
         }
     }
 }
