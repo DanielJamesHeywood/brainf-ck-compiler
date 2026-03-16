@@ -57,7 +57,7 @@ extension AbstractSyntaxTree {}
 
 extension AbstractSyntaxTree.Node {
     
-    @inlinable public func buildLLVM(
+    @inlinable public func buildLLVMIR(
         context: LLVMContext,
         builder: LLVMBuilder,
         putchar: LLVMFunction<LLVMInt32, LLVMInt32>,
@@ -190,7 +190,7 @@ extension AbstractSyntaxTree.Node {
             builder.buildBranch(to: exitBlock, if: byteIsZeroBeforeBody, elseTo: bodyBlock)
             builder.position(atEndOf: bodyBlock)
             for child in children {
-                child.buildLLVM(
+                child.buildLLVMIR(
                     context: context,
                     builder: builder,
                     putchar: putchar,
