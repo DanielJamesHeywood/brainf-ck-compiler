@@ -1,5 +1,6 @@
 import BFAbstractSyntaxTree
 import BFCommand
+import LLVMSwift
 import System
 import Utilities
 
@@ -35,5 +36,6 @@ do {
         print("'\(bfFilePath)' contains an unmatched closing bracket (']')", to: .standardError)
         exit(with: .failure)
     }
+    let context = LLVMContext()
     exit(with: .failure)
 }
