@@ -2,10 +2,13 @@ import LLVM
 
 public class LLVMModule {
     
+    @usableFromInline let context: LLVMContext
+    
     @usableFromInline let rawModule: LLVMModuleRef
     
-    @inlinable init(rawModule: LLVMModuleRef) {
-        self.rawModule = rawModule
+    @inlinable init(context: LLVMContext, name: String = "") {
+        self.context = context
+        self.rawModule = LLVMModuleCreateWithNameInContext(name, context.rawContext)
     }
     
     @inlinable deinit {
@@ -16,17 +19,12 @@ public class LLVMModule {
 extension LLVMModule {
     
     @inlinable public func addFunction<Return: LLVMValue, each Parameter: LLVMValue>(
-        type: LLVMFunctionType<Return, repeat each Parameter>,
         name: String = ""
     ) -> LLVMFunction<Return, repeat each Parameter> {
-        LLVMFunction(rawValue: LLVMAddFunction(rawModule, name, type.rawType))
+        LLVMFunction(rawValue: LLVMAddFunction(rawModule, name, LLVMFunction<Return, repeat each Parameter>.rawType(in: context)))
     }
     
-    @inlinable public func addGlobal<Value: LLVMValue>(
-        type: LLVMType<Value>,
-        name: String = "",
-        addressSpace: LLVMAddressSpace = 0
-    ) -> LLVMPointer<Value> {
-        LLVMPointer(rawValue: LLVMAddGlobalInAddressSpace(rawModule, type.rawType, name, UInt32(addressSpace)))
+    @inlinable public func addGlobal<Value: LLVMValue, let addressSpace: LLVMAddressSpace>(name: String = "") -> LLVMPointer<Value, addressSpace> {
+        LLVMPointer(rawValue: LLVMAddGlobalInAddressSpace(rawModule, Value.rawType(in: context), name, UInt32(addressSpace)))
     }
 }

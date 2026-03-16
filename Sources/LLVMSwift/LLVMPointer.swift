@@ -1,24 +1,8 @@
 import LLVM
 
-public class LLVMPointer<Element: LLVMValue>: LLVMValue {
+public class LLVMPointer<Element: LLVMValue, let addressSpace: LLVMAddressSpace>: LLVMValue {
     
-    @inlinable public convenience init<let count: LLVMElementCount>(
-        to type: LLVMType<Element>,
-        indexing array: LLVMArray<Element, count>,
-        at index: LLVMInt64,
-        noWrapFlags: [LLVMNoWrapFlag] = []
-    ) {
-        var rawIndex = index.rawValue as LLVMValueRef?
-        self.init(
-            rawValue: withUnsafeMutablePointer(to: &rawIndex) { pointerToRawIndex in
-                LLVMConstGEPWithNoWrapFlags(
-                    type.rawType,
-                    array.rawValue,
-                    pointerToRawIndex,
-                    1,
-                    noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
-                )
-            }
-        )
+    @inlinable override class func rawType(in context: LLVMContext) -> LLVMTypeRef {
+        LLVMPointerType(Element.rawType(in: context), UInt32(addressSpace))
     }
 }

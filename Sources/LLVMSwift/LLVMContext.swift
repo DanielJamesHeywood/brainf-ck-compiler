@@ -20,22 +20,53 @@ extension LLVMContext {
     }
     
     @inlinable public func makeBuilder() -> LLVMBuilder {
-        LLVMBuilder(rawBuilder: LLVMCreateBuilderInContext(rawContext))
+        LLVMBuilder(context: self)
     }
     
-    @inlinable public func makeInt8Type() -> LLVMInt8Type {
-        LLVMInt8Type(rawType: LLVMInt8TypeInContext(rawContext))
+    @inlinable public func makeInt8(_ value: UInt8) -> LLVMInt8 {
+        LLVMInt8(rawValue: LLVMConstInt(LLVMInt8.rawType(in: self), UInt64(value), 0))
     }
     
-    @inlinable public func makeInt32Type() -> LLVMInt32Type {
-        LLVMInt32Type(rawType: LLVMInt32TypeInContext(rawContext))
+    @inlinable public func makeInt8(_ value: Int8) -> LLVMInt8 {
+        makeInt8(UInt8(bitPattern: value))
     }
     
-    @inlinable public func makeInt64Type() -> LLVMInt64Type {
-        LLVMInt64Type(rawType: LLVMInt64TypeInContext(rawContext))
+    @inlinable public func makeInt32(_ value: UInt32) -> LLVMInt32 {
+        LLVMInt32(rawValue: LLVMConstInt(LLVMInt32.rawType(in: self), UInt64(value), 0))
     }
     
-    @inlinable public func makeModule(id: String = "") -> LLVMModule {
-        LLVMModule(rawModule: LLVMModuleCreateWithNameInContext(id, rawContext))
+    @inlinable public func makeInt32(_ value: Int32) -> LLVMInt32 {
+        makeInt32(UInt32(bitPattern: value))
+    }
+    
+    @inlinable public func makeInt64(_ value: UInt64) -> LLVMInt64 {
+        LLVMInt64(rawValue: LLVMConstInt(LLVMInt64.rawType(in: self), value, 0))
+    }
+    
+    @inlinable public func makeInt64(_ value: Int64) -> LLVMInt64 {
+        makeInt64(UInt64(bitPattern: value))
+    }
+    
+    @inlinable public func makeModule(name: String = "") -> LLVMModule {
+        LLVMModule(context: self, name: name)
+    }
+    
+    @inlinable public func makePointer<Element: LLVMValue, let addressSpace: LLVMAddressSpace, let count: LLVMElementCount>(
+        indexing array: LLVMArray<Element, count>,
+        at index: LLVMInt64,
+        noWrapFlags: [LLVMNoWrapFlag] = []
+    ) -> LLVMPointer<Element, addressSpace> {
+        var rawIndex = index.rawValue as LLVMValueRef?
+        return LLVMPointer(
+            rawValue: withUnsafeMutablePointer(to: &rawIndex) { pointerToRawIndex in
+                LLVMConstGEPWithNoWrapFlags(
+                    Element.rawType(in: self),
+                    array.rawValue,
+                    pointerToRawIndex,
+                    1,
+                    noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
+                )
+            }
+        )
     }
 }
