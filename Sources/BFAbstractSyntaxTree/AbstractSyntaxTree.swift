@@ -68,10 +68,10 @@ extension AbstractSyntaxTree.Node {
         bytes: LLVMArray<LLVMInt8>
     ) {
         let byteType = context.makeInt8Type()
+        let int32Type = context.makeInt32Type()
         switch self {
         case .incrementPointer:
             let successBlock = context.appendBasicBlock(to: main, name: "success")
-            let int32Type = context.makeInt32Type()
             let pointer = builder.buildLoad(of: LLVMPointerType(elementType: byteType), from: pointerToPointer, name: "pointer")
             let incrementedPointer = builder.buildGetElementPointer(
                 to: byteType,
@@ -91,7 +91,6 @@ extension AbstractSyntaxTree.Node {
             builder.buildStore(of: incrementedPointer, to: pointerToPointer)
         case .decrementPointer:
             let successBlock = context.appendBasicBlock(to: main, name: "success")
-            let int32Type = context.makeInt32Type()
             let pointer = builder.buildLoad(of: LLVMPointerType(elementType: byteType), from: pointerToPointer, name: "pointer")
             let decrementedPointerWillBeInBounds = builder.buildComparison(
                 of: pointer,
@@ -121,7 +120,6 @@ extension AbstractSyntaxTree.Node {
             builder.buildStore(of: decrementedByte, to: pointer)
         case .outputByte:
             let successBlock = context.appendBasicBlock(to: main, name: "success")
-            let int32Type = context.makeInt32Type()
             let pointer = builder.buildLoad(of: LLVMPointerType(elementType: byteType), from: pointerToPointer, name: "pointer")
             let byte = builder.buildLoad(of: byteType, from: pointer, name: "byte")
             let zeroExtendedByte = builder.buildZeroExtension(of: byte, to: int32Type, name: "zeroextendedbyte")
@@ -136,7 +134,6 @@ extension AbstractSyntaxTree.Node {
             builder.position(atEndOf: successBlock)
         case .inputByte:
             let successBlock = context.appendBasicBlock(to: main, name: "success")
-            let int32Type = context.makeInt32Type()
             let getcharReturnValue = builder.buildCall(to: getchar, returning: int32Type, name: "getcharreturnvalue")
             let getcharReturnedEOF = builder.buildComparison(
                 of: getcharReturnValue,
