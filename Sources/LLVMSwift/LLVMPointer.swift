@@ -5,7 +5,7 @@ public class LLVMPointer<Element: LLVMValue>: LLVMValue {
     @inlinable public convenience init(
         to type: LLVMType<Element>,
         indexing array: LLVMArray<Element>,
-        at index: LLVMInt32,
+        at index: LLVMInt64,
         noWrapFlags: [LLVMNoWrapFlag] = []
     ) {
         var rawIndex = index.rawValue as LLVMValueRef?

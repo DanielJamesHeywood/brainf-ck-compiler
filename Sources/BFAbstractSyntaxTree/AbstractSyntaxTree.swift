@@ -75,7 +75,7 @@ extension AbstractSyntaxTree.Node {
             let incrementedPointer = builder.buildGetElementPointer(
                 to: context.makeInt8Type(),
                 indexing: pointer,
-                at: LLVMInt32(1 as Int32, type: context.makeInt32Type()),
+                at: LLVMInt64(1 as Int64, type: context.makeInt64Type()),
                 name: "incrementedpointer",
                 noWrapFlags: [.inBounds]
             )
@@ -84,7 +84,7 @@ extension AbstractSyntaxTree.Node {
                 to: LLVMPointer(
                     to: context.makeInt8Type(),
                     indexing: bytes,
-                    at: LLVMInt32(0 as UInt32, type: context.makeInt32Type()),
+                    at: LLVMInt64(0 as UInt64, type: context.makeInt64Type()),
                     noWrapFlags: [.inBounds]
                 ),
                 using: .unsignedLessThan,
@@ -102,7 +102,7 @@ extension AbstractSyntaxTree.Node {
                 to: LLVMPointer(
                     to: context.makeInt8Type(),
                     indexing: bytes,
-                    at: LLVMInt32(30000 as UInt32, type: context.makeInt32Type()),
+                    at: LLVMInt64(30000 as UInt64, type: context.makeInt64Type()),
                     noWrapFlags: [.inBounds]
                 ),
                 using: .unsignedGreaterThan,
@@ -113,7 +113,7 @@ extension AbstractSyntaxTree.Node {
             let decrementedPointer = builder.buildGetElementPointer(
                 to: context.makeInt8Type(),
                 indexing: pointer,
-                at: LLVMInt32(-1 as Int32, type: context.makeInt32Type()),
+                at: LLVMInt64(-1 as Int64, type: context.makeInt64Type()),
                 name: "decrementedpointer",
                 noWrapFlags: [.inBounds]
             )

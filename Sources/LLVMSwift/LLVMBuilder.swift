@@ -49,7 +49,7 @@ extension LLVMBuilder {
     @inlinable public func buildGetElementPointer<Element: LLVMValue>(
         to type: LLVMType<Element>,
         indexing pointer: LLVMPointer<Element>,
-        at index: LLVMInt32,
+        at index: LLVMInt64,
         name: String = "",
         noWrapFlags: [LLVMNoWrapFlag] = []
     ) -> LLVMPointer<Element> {
