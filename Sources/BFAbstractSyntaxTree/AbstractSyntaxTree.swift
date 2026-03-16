@@ -147,7 +147,7 @@ extension AbstractSyntaxTree.Node {
             builder.buildBranch(to: failureBlock, if: getcharReturnedEOF, elseTo: successBlock)
             builder.position(atEndOf: successBlock)
             let pointer = builder.buildLoad(of: LLVMPointerType(elementType: byteType), from: pointerToPointer, name: "pointer")
-            let byte = builder.buildTruncation(of: getcharReturnValue, to: context.makeInt8Type(), name: "byte")
+            let byte = builder.buildTruncation(of: getcharReturnValue, to: byteType, name: "byte")
             builder.buildStore(of: byte, to: pointer)
         case let .loop(children):
             let body = context.appendBasicBlock(to: main, name: "body")
