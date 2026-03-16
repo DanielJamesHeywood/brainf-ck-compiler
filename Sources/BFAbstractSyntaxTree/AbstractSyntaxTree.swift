@@ -170,15 +170,15 @@ extension AbstractSyntaxTree.Node {
         case let .loop(children):
             let body = context.appendBasicBlock(to: main, name: "body")
             let exit = context.makeBasicBlock(name: "exit")
-            let pointer = builder.buildLoad(of: context.makeInt8Type().makePointerType(), from: pointerToPointer, name: "pointer")
-            let byte = builder.buildLoad(of: context.makeInt8Type(), from: pointer, name: "byte")
-            let byteIsZero = builder.buildComparison(
-                of: byte,
+            let pointerBeforeBody = builder.buildLoad(of: context.makeInt8Type().makePointerType(), from: pointerToPointer, name: "pointer")
+            let byteBeforeBody = builder.buildLoad(of: context.makeInt8Type(), from: pointerBeforeBody, name: "byte")
+            let byteIsZeroBeforeBody = builder.buildComparison(
+                of: byteBeforeBody,
                 to: LLVMInt8(0 as UInt8, type: context.makeInt8Type()),
                 using: .equalTo,
                 name: "byteiszero"
             )
-            builder.buildBranch(to: exit, if: byteIsZero, elseTo: body)
+            builder.buildBranch(to: exit, if: byteIsZeroBeforeBody, elseTo: body)
             builder.position(atEndOf: exit)
             for child in children {
                 child.buildLLVM(
@@ -193,15 +193,15 @@ extension AbstractSyntaxTree.Node {
                 )
             }
             main.appendBasicBlock(exit)
-            let pointerAfter = builder.buildLoad(of: context.makeInt8Type().makePointerType(), from: pointerToPointer, name: "pointer")
-            let byteAfter = builder.buildLoad(of: context.makeInt8Type(), from: pointerAfter, name: "byte")
-            let byteIsZeroAfter = builder.buildComparison(
-                of: byteAfter,
+            let pointerAfterBody = builder.buildLoad(of: context.makeInt8Type().makePointerType(), from: pointerToPointer, name: "pointer")
+            let byteAfterBody = builder.buildLoad(of: context.makeInt8Type(), from: pointerAfterBody, name: "byte")
+            let byteIsZeroAfterBody = builder.buildComparison(
+                of: byteAfterBody,
                 to: LLVMInt8(0 as UInt8, type: context.makeInt8Type()),
                 using: .equalTo,
                 name: "byteiszero"
             )
-            builder.buildBranch(to: exit, if: byteIsZeroAfter, elseTo: body)
+            builder.buildBranch(to: exit, if: byteIsZeroAfterBody, elseTo: body)
             builder.position(atEndOf: exit)
         }
     }
