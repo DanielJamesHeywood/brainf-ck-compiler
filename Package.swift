@@ -7,10 +7,11 @@ let package = Package(
     platforms: [.macOS("26.0")],
     products: [.executable(name: "bfc", targets: ["brainf*ck compiler"])],
     targets: [
-        .target(name: "BFAbstractSyntaxTree", dependencies: ["BFCommand", "LLVMSwift"]),
+        .target(name: "BFAbstractSyntaxTree", dependencies: ["BFCommand"]),
         .testTarget(name: "BFAbstractSyntaxTree tests", dependencies: ["BFAbstractSyntaxTree"]),
         .target(name: "BFCommand"),
         .testTarget(name: "BFCommand tests", dependencies: ["BFCommand"]),
+        .target(name: "BFLLVM", dependencies: ["BFAbstractSyntaxTree", "LLVMSwift"]),
         .executableTarget(name: "brainf*ck compiler", dependencies: ["BFAbstractSyntaxTree", "BFCommand", "LLVMSwift", "Utilities"]),
         .systemLibrary(name: "LLVM", pkgConfig: "llvm", providers: [.brew(["llvm"])]),
         .target(name: "LLVMSwift", dependencies: ["LLVM"]),
