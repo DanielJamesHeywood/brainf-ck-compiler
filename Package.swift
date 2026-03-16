@@ -11,7 +11,7 @@ let package = Package(
         .testTarget(name: "BFAbstractSyntaxTree tests", dependencies: ["BFAbstractSyntaxTree"]),
         .target(name: "BFCommand"),
         .testTarget(name: "BFCommand tests", dependencies: ["BFCommand"]),
-        .executableTarget(name: "brainf*ck compiler", dependencies: ["BFAbstractSyntaxTree", "Utilities"]),
+        .executableTarget(name: "brainf*ck compiler", dependencies: ["BFAbstractSyntaxTree", "BFCommand", "LLVMSwift", "Utilities"]),
         .systemLibrary(name: "LLVM", pkgConfig: "llvm", providers: [.brew(["llvm"])]),
         .target(name: "LLVMSwift", dependencies: ["LLVM"]),
         .target(name: "Utilities"),
