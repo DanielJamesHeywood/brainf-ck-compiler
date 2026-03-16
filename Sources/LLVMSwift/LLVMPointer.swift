@@ -2,7 +2,7 @@ import LLVM
 
 public class LLVMPointer<Element: LLVMValue>: LLVMValue {
     
-    @inlinable public convenience init<let count: Int>(
+    @inlinable public convenience init<let count: LLVMElementCount>(
         to type: LLVMType<Element>,
         indexing array: LLVMArray<Element, count>,
         at index: LLVMInt64,
