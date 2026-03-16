@@ -1,10 +1,8 @@
 import LLVM
 
-public class LLVMArrayType<Element: LLVMValue>: LLVMType<LLVMArray<Element>> {
+public class LLVMArrayType<Element: LLVMValue, let count: Int>: LLVMType<LLVMArray<Element, count>> {
     
-    public typealias ElementCount = UInt64
-    
-    @inlinable public convenience init(elementType: LLVMType<Element>, elementCount: ElementCount) {
-        self.init(rawType: LLVMArrayType2(elementType.rawType, elementCount))
+    @inlinable public convenience init(elementType: LLVMType<Element>) {
+        self.init(rawType: LLVMArrayType2(elementType.rawType, UInt64(count)))
     }
 }

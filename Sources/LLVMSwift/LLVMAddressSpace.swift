@@ -1,2 +1,2 @@
 
-public typealias LLVMAddressSpace = UInt32
+public typealias LLVMAddressSpace = Int

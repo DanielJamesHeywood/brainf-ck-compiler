@@ -65,7 +65,7 @@ extension AbstractSyntaxTree.Node {
         main: LLVMFunction<LLVMInt32>,
         failureBlock: LLVMBasicBlock,
         pointerToPointer: LLVMPointer<LLVMPointer<LLVMInt8>>,
-        bytes: LLVMArray<LLVMInt8>
+        bytes: LLVMArray<LLVMInt8, 30000>
     ) {
         switch self {
         case .incrementPointer:

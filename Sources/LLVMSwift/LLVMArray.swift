@@ -1,2 +1,2 @@
 
-public class LLVMArray<Element: LLVMValue>: LLVMValue {}
+public class LLVMArray<Element: LLVMValue, let count: Int>: LLVMValue {}

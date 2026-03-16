@@ -27,6 +27,6 @@ extension LLVMModule {
         name: String = "",
         addressSpace: LLVMAddressSpace = 0
     ) -> LLVMPointer<Value> {
-        LLVMPointer(rawValue: LLVMAddGlobalInAddressSpace(rawModule, type.rawType, name, addressSpace))
+        LLVMPointer(rawValue: LLVMAddGlobalInAddressSpace(rawModule, type.rawType, name, UInt32(addressSpace)))
     }
 }

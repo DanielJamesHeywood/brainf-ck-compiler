@@ -2,9 +2,9 @@ import LLVM
 
 public class LLVMPointer<Element: LLVMValue>: LLVMValue {
     
-    @inlinable public convenience init(
+    @inlinable public convenience init<let count: Int>(
         to type: LLVMType<Element>,
-        indexing array: LLVMArray<Element>,
+        indexing array: LLVMArray<Element, count>,
         at index: LLVMInt64,
         noWrapFlags: [LLVMNoWrapFlag] = []
     ) {
