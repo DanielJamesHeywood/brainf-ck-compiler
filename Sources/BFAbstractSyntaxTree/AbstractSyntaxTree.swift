@@ -186,4 +186,3 @@ extension AbstractSyntaxTree.Node {
         }
     }
 }
-
