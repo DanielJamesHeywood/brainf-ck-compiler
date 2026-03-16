@@ -8,3 +8,10 @@ public class LLVMType<Value: LLVMValue> {
         self.rawType = rawType
     }
 }
+
+extension LLVMType {
+    
+    @inlinable public func makePointerType<Element: LLVMValue>(addressSpace: LLVMAddressSpace = 0) -> LLVMPointerType<Element> {
+        LLVMPointerType(rawType: LLVM.LLVMPointerType(rawType, addressSpace))
+    }
+}
