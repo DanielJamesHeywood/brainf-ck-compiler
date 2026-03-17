@@ -8,7 +8,7 @@ extension LLVMBuilder {
         in context: LLVMContext,
         failureBlock: LLVMBasicBlock,
         pointerToPointer: LLVMPointer<LLVMPointer<LLVMInt8, 0>, 0>,
-        bytes: LLVMArray<LLVMInt8, 30000>,
+        pointerToBytes: LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>,
         putchar: LLVMFunction<LLVMInt32, LLVMInt32>,
         getchar: LLVMFunction<LLVMInt32>,
         main: LLVMFunction<LLVMInt32>
@@ -26,7 +26,12 @@ extension LLVMBuilder {
             )
             let incrementedPointerIsInBounds = buildComparison(
                 of: incrementedPointer,
-                to: context.makePointer(indexing: bytes, at: context.makeInt64(30000 as UInt64), noWrapFlags: [.inBounds]),
+                to: context.makePointer(
+                    indexing: pointerToBytes,
+                    at: context.makeInt64(0 as UInt64),
+                    thenAt: context.makeInt64(30000 as UInt64),
+                    noWrapFlags: [.inBounds]
+                ),
                 using: .unsignedLessThan,
                 name: "incrementedpointerisinbounds"
             )
@@ -39,7 +44,12 @@ extension LLVMBuilder {
             let pointer = buildLoad(from: pointerToPointer, name: "pointer")
             let decrementedPointerWillBeInBounds = buildComparison(
                 of: pointer,
-                to: context.makePointer(indexing: bytes, at: context.makeInt64(0 as UInt64), noWrapFlags: [.inBounds]),
+                to: context.makePointer(
+                    indexing: pointerToBytes,
+                    at: context.makeInt64(0 as UInt64),
+                    thenAt: context.makeInt64(0 as UInt64),
+                    noWrapFlags: [.inBounds]
+                ),
                 using: .unsignedGreaterThan,
                 name: "decrementedpointerwillbeinbounds"
             )
@@ -112,7 +122,7 @@ extension LLVMBuilder {
                     in: context,
                     failureBlock: failureBlock,
                     pointerToPointer: pointerToPointer,
-                    bytes: bytes,
+                    pointerToBytes: pointerToBytes,
                     putchar: putchar,
                     getchar: getchar,
                     main: main

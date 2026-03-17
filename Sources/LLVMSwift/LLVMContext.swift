@@ -52,18 +52,19 @@ extension LLVMContext {
     }
     
     @inlinable public func makePointer<Element: LLVMValue, let addressSpace: LLVMAddressSpace, let count: LLVMElementCount>(
-        indexing array: LLVMArray<Element, count>,
-        at index: LLVMInt64,
+        indexing pointerToArray: LLVMPointer<LLVMArray<Element, count>, 0>,
+        at pointerIndex: LLVMInt64,
+        thenAt arrayIndex: LLVMInt64,
         noWrapFlags: [LLVMNoWrapFlag] = []
     ) -> LLVMPointer<Element, addressSpace> {
-        var rawIndex = index.rawValue as LLVMValueRef?
+        var rawIndices = [pointerIndex.rawValue, arrayIndex.rawValue] as [LLVMValueRef?]
         return LLVMPointer(
-            rawValue: withUnsafeMutablePointer(to: &rawIndex) { pointerToRawIndex in
+            rawValue: rawIndices.withUnsafeMutableBufferPointer { buffer in
                 LLVMConstGEPWithNoWrapFlags(
                     Element.rawType(in: self),
-                    array.rawValue,
-                    pointerToRawIndex,
-                    1,
+                    pointerToArray.rawValue,
+                    buffer.baseAddress,
+                    UInt32(buffer.count),
                     noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
                 )
             }
