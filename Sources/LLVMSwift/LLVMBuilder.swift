@@ -111,7 +111,14 @@ extension LLVMBuilder {
         repeat rawArguments.append((each arguments).rawValue)
         return rawArguments.withUnsafeMutableBufferPointer { buffer in
             Return(
-                rawValue: LLVMBuildCall2(rawBuilder, Return.rawType(in: context), function.rawValue, buffer.baseAddress, UInt32(buffer.count), name)
+                rawValue: LLVMBuildCall2(
+                    rawBuilder,
+                    LLVMFunction<Return, repeat each Argument>.rawType(in: context),
+                    function.rawValue,
+                    buffer.baseAddress,
+                    UInt32(buffer.count),
+                    name
+                )
             )
         }
     }
