@@ -137,8 +137,8 @@ extension LLVMBuilder {
             main.appendBasicBlock(startBlock)
             let pointerBeforeBody = buildLoad(from: pointerToPointer)
             let byteBeforeBody = buildLoad(from: pointerBeforeBody)
-            let byteIsZeroBeforeBody = buildComparison(of: byteBeforeBody, to: context.makeInt8(0 as UInt8), using: .equalTo)
-            buildBranch(to: exitBlock, if: byteIsZeroBeforeBody, elseTo: startBlock)
+            let byteIsNonZeroBeforeBody = buildComparison(of: byteBeforeBody, to: context.makeInt8(0 as UInt8), using: .notEqualTo)
+            buildBranch(to: startBlock, if: byteIsNonZeroBeforeBody, elseTo: exitBlock)
             position(atEndOf: startBlock)
             for child in children {
                 buildAbstractSyntaxTreeNode(
@@ -154,8 +154,8 @@ extension LLVMBuilder {
             main.appendBasicBlock(exitBlock)
             let pointerAfterBody = buildLoad(from: pointerToPointer)
             let byteAfterBody = buildLoad(from: pointerAfterBody)
-            let byteIsZeroAfterBody = buildComparison(of: byteAfterBody, to: context.makeInt8(0 as UInt8), using: .equalTo)
-            buildBranch(to: exitBlock, if: byteIsZeroAfterBody, elseTo: startBlock)
+            let byteIsNonZeroAfterBody = buildComparison(of: byteAfterBody, to: context.makeInt8(0 as UInt8), using: .notEqualTo)
+            buildBranch(to: startBlock, if: byteIsNonZeroAfterBody, elseTo: exitBlock)
             position(atEndOf: exitBlock)
         }
     }
