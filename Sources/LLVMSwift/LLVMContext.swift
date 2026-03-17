@@ -51,6 +51,10 @@ extension LLVMContext {
         LLVMModule(context: self, name: name)
     }
     
+    @inlinable public func makeNull<Element: LLVMValue, let count: LLVMElementCount>() -> LLVMArray<Element, count> {
+        LLVMArray(rawValue: LLVMConstNull(LLVMArray<Element, count>.rawType(in: self)))
+    }
+    
     @inlinable public func makePointer<Element: LLVMValue, let addressSpace: LLVMAddressSpace, let count: LLVMElementCount>(
         indexing pointerToArray: LLVMPointer<LLVMArray<Element, count>, addressSpace>,
         at pointerIndex: LLVMInt64,
