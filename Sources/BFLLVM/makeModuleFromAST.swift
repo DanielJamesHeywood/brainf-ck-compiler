@@ -10,12 +10,13 @@ extension LLVMBuilder {
         getchar: LLVMFunction<LLVMInt32>,
         main: LLVMFunction<LLVMInt32>,
         pointerToPointer: LLVMPointer<LLVMPointer<LLVMInt8, 0>, 0>,
-        pointerToBytes: LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>,
-        failureBlock: LLVMBasicBlock
+        pointerToBytes: LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>
     ) {
         switch node {
         case .incrementPointer:
             let successBlock = context.makeBasicBlock()
+            let failureBlock = context.makeBasicBlock()
+            main.appendBasicBlock(failureBlock)
             main.appendBasicBlock(successBlock)
             let pointer = buildLoad(from: pointerToPointer)
             let incrementedPointer = buildGetElementPointer(indexing: pointer, at: context.makeInt64(1 as Int64), noWrapFlags: [.inBounds])
@@ -30,10 +31,14 @@ extension LLVMBuilder {
                 using: .unsignedLessThan
             )
             buildBranch(to: successBlock, if: incrementedPointerIsInBounds, elseTo: failureBlock)
+            position(atEndOf: failureBlock)
+            buildReturn(of: context.makeInt32(1 as UInt32))
             position(atEndOf: successBlock)
             buildStore(of: incrementedPointer, to: pointerToPointer)
         case .decrementPointer:
             let successBlock = context.makeBasicBlock()
+            let failureBlock = context.makeBasicBlock()
+            main.appendBasicBlock(failureBlock)
             main.appendBasicBlock(successBlock)
             let pointer = buildLoad(from: pointerToPointer)
             let decrementedPointerWillBeInBounds = buildComparison(
@@ -47,6 +52,8 @@ extension LLVMBuilder {
                 using: .unsignedGreaterThan
             )
             buildBranch(to: successBlock, if: decrementedPointerWillBeInBounds, elseTo: failureBlock)
+            position(atEndOf: failureBlock)
+            buildReturn(of: context.makeInt32(1 as UInt32))
             position(atEndOf: successBlock)
             let decrementedPointer = buildGetElementPointer(indexing: pointer, at: context.makeInt64(-1 as Int64), noWrapFlags: [.inBounds])
             buildStore(of: decrementedPointer, to: pointerToPointer)
@@ -62,6 +69,8 @@ extension LLVMBuilder {
             buildStore(of: decrementedByte, to: pointer)
         case .outputByte:
             let successBlock = context.makeBasicBlock()
+            let failureBlock = context.makeBasicBlock()
+            main.appendBasicBlock(failureBlock)
             main.appendBasicBlock(successBlock)
             let pointer = buildLoad(from: pointerToPointer)
             let byte = buildLoad(from: pointer)
@@ -69,13 +78,19 @@ extension LLVMBuilder {
             let putcharReturnValue = buildCall(to: putchar, passing: zeroExtendedByte)
             let putcharReturnedEOF = buildComparison(of: putcharReturnValue,to: context.makeInt32(0 as UInt32), using: .signedLessThan)
             buildBranch(to: failureBlock, if: putcharReturnedEOF, elseTo: successBlock)
+            position(atEndOf: failureBlock)
+            buildReturn(of: context.makeInt32(1 as UInt32))
             position(atEndOf: successBlock)
         case .inputByte:
             let successBlock = context.makeBasicBlock()
+            let failureBlock = context.makeBasicBlock()
+            main.appendBasicBlock(failureBlock)
             main.appendBasicBlock(successBlock)
             let getcharReturnValue = buildCall(to: getchar)
             let getcharReturnedEOF = buildComparison(of: getcharReturnValue, to: context.makeInt32(0 as UInt32), using: .signedLessThan)
             buildBranch(to: failureBlock, if: getcharReturnedEOF, elseTo: successBlock)
+            position(atEndOf: failureBlock)
+            buildReturn(of: context.makeInt32(1 as UInt32))
             position(atEndOf: successBlock)
             let pointer = buildLoad(from: pointerToPointer)
             let byte = buildTruncation(of: getcharReturnValue)
@@ -97,8 +112,7 @@ extension LLVMBuilder {
                     getchar: getchar,
                     main: main,
                     pointerToPointer: pointerToPointer,
-                    pointerToBytes: pointerToBytes,
-                    failureBlock: failureBlock
+                    pointerToBytes: pointerToBytes
                 )
             }
             main.appendBasicBlock(exitBlock)
