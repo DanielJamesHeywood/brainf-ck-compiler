@@ -25,8 +25,8 @@ extension LLVMModule {
     }
     
     @inlinable public func addGlobal<Value: LLVMValue, let addressSpace: LLVMAddressSpace>(
-        name: String = "",
-        initializingTo value: Value
+        initializingTo value: Value,
+        name: String = ""
     ) -> LLVMPointer<Value, addressSpace> {
         let rawGlobal = LLVMAddGlobalInAddressSpace(rawModule, Value.rawType(in: context), name, UInt32(addressSpace)) as LLVMValueRef
         LLVMSetInitializer(rawGlobal, value.rawValue)
