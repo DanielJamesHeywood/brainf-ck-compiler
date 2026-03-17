@@ -6,12 +6,12 @@ extension LLVMBuilder {
     @inlinable func buildAbstractSyntaxTreeNode(
         _ node: AbstractSyntaxTree.Node,
         in context: LLVMContext,
-        failureBlock: LLVMBasicBlock,
-        pointerToPointer: LLVMPointer<LLVMPointer<LLVMInt8, 0>, 0>,
-        pointerToBytes: LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>,
         putchar: LLVMFunction<LLVMInt32, LLVMInt32>,
         getchar: LLVMFunction<LLVMInt32>,
-        main: LLVMFunction<LLVMInt32>
+        main: LLVMFunction<LLVMInt32>,
+        pointerToPointer: LLVMPointer<LLVMPointer<LLVMInt8, 0>, 0>,
+        pointerToBytes: LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>,
+        failureBlock: LLVMBasicBlock
     ) {
         switch node {
         case .incrementPointer:
@@ -120,12 +120,12 @@ extension LLVMBuilder {
                 buildAbstractSyntaxTreeNode(
                     child,
                     in: context,
-                    failureBlock: failureBlock,
-                    pointerToPointer: pointerToPointer,
-                    pointerToBytes: pointerToBytes,
                     putchar: putchar,
                     getchar: getchar,
-                    main: main
+                    main: main,
+                    pointerToPointer: pointerToPointer,
+                    pointerToBytes: pointerToBytes,
+                    failureBlock: failureBlock
                 )
             }
             main.appendBasicBlock(exitBlock)
