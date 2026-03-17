@@ -15,15 +15,10 @@ extension LLVMBuilder {
     ) {
         switch node {
         case .incrementPointer:
-            let successBlock = context.makeBasicBlock(name: "success")
+            let successBlock = context.makeBasicBlock()
             main.appendBasicBlock(successBlock)
-            let pointer = buildLoad(from: pointerToPointer, name: "pointer")
-            let incrementedPointer = buildGetElementPointer(
-                indexing: pointer,
-                at: context.makeInt64(1 as Int64),
-                name: "incrementedpointer",
-                noWrapFlags: [.inBounds]
-            )
+            let pointer = buildLoad(from: pointerToPointer)
+            let incrementedPointer = buildGetElementPointer(indexing: pointer, at: context.makeInt64(1 as Int64), noWrapFlags: [.inBounds])
             let incrementedPointerIsInBounds = buildComparison(
                 of: incrementedPointer,
                 to: context.makePointer(
@@ -32,16 +27,15 @@ extension LLVMBuilder {
                     thenAt: context.makeInt64(30000 as UInt64),
                     noWrapFlags: [.inBounds]
                 ),
-                using: .unsignedLessThan,
-                name: "incrementedpointerisinbounds"
+                using: .unsignedLessThan
             )
             buildBranch(to: successBlock, if: incrementedPointerIsInBounds, elseTo: failureBlock)
             position(atEndOf: successBlock)
             buildStore(of: incrementedPointer, to: pointerToPointer)
         case .decrementPointer:
-            let successBlock = context.makeBasicBlock(name: "success")
+            let successBlock = context.makeBasicBlock()
             main.appendBasicBlock(successBlock)
-            let pointer = buildLoad(from: pointerToPointer, name: "pointer")
+            let pointer = buildLoad(from: pointerToPointer)
             let decrementedPointerWillBeInBounds = buildComparison(
                 of: pointer,
                 to: context.makePointer(
@@ -50,70 +44,49 @@ extension LLVMBuilder {
                     thenAt: context.makeInt64(0 as UInt64),
                     noWrapFlags: [.inBounds]
                 ),
-                using: .unsignedGreaterThan,
-                name: "decrementedpointerwillbeinbounds"
+                using: .unsignedGreaterThan
             )
             buildBranch(to: successBlock, if: decrementedPointerWillBeInBounds, elseTo: failureBlock)
             position(atEndOf: successBlock)
-            let decrementedPointer = buildGetElementPointer(
-                indexing: pointer,
-                at: context.makeInt64(-1 as Int64),
-                name: "decrementedpointer",
-                noWrapFlags: [.inBounds]
-            )
+            let decrementedPointer = buildGetElementPointer(indexing: pointer, at: context.makeInt64(-1 as Int64), noWrapFlags: [.inBounds])
             buildStore(of: decrementedPointer, to: pointerToPointer)
         case .incrementByte:
-            let pointer = buildLoad(from: pointerToPointer, name: "pointer")
-            let byte = buildLoad(from: pointer, name: "byte")
-            let incrementedByte = buildAddition(of: context.makeInt8(1 as UInt8), to: byte, name: "incrementedbyte")
+            let pointer = buildLoad(from: pointerToPointer)
+            let byte = buildLoad(from: pointer)
+            let incrementedByte = buildAddition(of: context.makeInt8(1 as UInt8), to: byte)
             buildStore(of: incrementedByte, to: pointer)
         case .decrementByte:
-            let pointer = buildLoad(from: pointerToPointer, name: "pointer")
-            let byte = buildLoad(from: pointer, name: "byte")
-            let decrementedByte = buildSubtraction(of: context.makeInt8(1 as UInt8), from: byte, name: "decrementedbyte")
+            let pointer = buildLoad(from: pointerToPointer)
+            let byte = buildLoad(from: pointer)
+            let decrementedByte = buildSubtraction(of: context.makeInt8(1 as UInt8), from: byte)
             buildStore(of: decrementedByte, to: pointer)
         case .outputByte:
-            let successBlock = context.makeBasicBlock(name: "success")
+            let successBlock = context.makeBasicBlock()
             main.appendBasicBlock(successBlock)
-            let pointer = buildLoad(from: pointerToPointer, name: "pointer")
-            let byte = buildLoad(from: pointer, name: "byte")
-            let zeroExtendedByte = buildZeroExtension(of: byte, name: "zeroextendedbyte")
-            let putcharReturnValue = buildCall(to: putchar, passing: zeroExtendedByte, name: "putcharreturnvalue")
-            let putcharReturnedEOF = buildComparison(
-                of: putcharReturnValue,
-                to: context.makeInt32(0 as UInt32),
-                using: .signedLessThan,
-                name: "putcharreturnedeof"
-            )
+            let pointer = buildLoad(from: pointerToPointer)
+            let byte = buildLoad(from: pointer)
+            let zeroExtendedByte = buildZeroExtension(of: byte)
+            let putcharReturnValue = buildCall(to: putchar, passing: zeroExtendedByte)
+            let putcharReturnedEOF = buildComparison(of: putcharReturnValue,to: context.makeInt32(0 as UInt32), using: .signedLessThan)
             buildBranch(to: failureBlock, if: putcharReturnedEOF, elseTo: successBlock)
             position(atEndOf: successBlock)
         case .inputByte:
-            let successBlock = context.makeBasicBlock(name: "success")
+            let successBlock = context.makeBasicBlock()
             main.appendBasicBlock(successBlock)
-            let getcharReturnValue = buildCall(to: getchar, name: "getcharreturnvalue")
-            let getcharReturnedEOF = buildComparison(
-                of: getcharReturnValue,
-                to: context.makeInt32(0 as UInt32),
-                using: .signedLessThan,
-                name: "getcharreturnedeof"
-            )
+            let getcharReturnValue = buildCall(to: getchar)
+            let getcharReturnedEOF = buildComparison(of: getcharReturnValue, to: context.makeInt32(0 as UInt32), using: .signedLessThan)
             buildBranch(to: failureBlock, if: getcharReturnedEOF, elseTo: successBlock)
             position(atEndOf: successBlock)
-            let pointer = buildLoad(from: pointerToPointer, name: "pointer")
-            let byte = buildTruncation(of: getcharReturnValue, name: "byte")
+            let pointer = buildLoad(from: pointerToPointer)
+            let byte = buildTruncation(of: getcharReturnValue)
             buildStore(of: byte, to: pointer)
         case let .loop(children):
-            let bodyBlock = context.makeBasicBlock(name: "body")
-            let exitBlock = context.makeBasicBlock(name: "exit")
+            let bodyBlock = context.makeBasicBlock()
+            let exitBlock = context.makeBasicBlock()
             main.appendBasicBlock(bodyBlock)
-            let pointerBeforeBody = buildLoad(from: pointerToPointer, name: "pointer")
-            let byteBeforeBody = buildLoad(from: pointerBeforeBody, name: "byte")
-            let byteIsZeroBeforeBody = buildComparison(
-                of: byteBeforeBody,
-                to: context.makeInt8(0 as UInt8),
-                using: .equalTo,
-                name: "byteiszero"
-            )
+            let pointerBeforeBody = buildLoad(from: pointerToPointer)
+            let byteBeforeBody = buildLoad(from: pointerBeforeBody)
+            let byteIsZeroBeforeBody = buildComparison(of: byteBeforeBody, to: context.makeInt8(0 as UInt8), using: .equalTo)
             buildBranch(to: exitBlock, if: byteIsZeroBeforeBody, elseTo: bodyBlock)
             position(atEndOf: bodyBlock)
             for child in children {
@@ -129,14 +102,9 @@ extension LLVMBuilder {
                 )
             }
             main.appendBasicBlock(exitBlock)
-            let pointerAfterBody = buildLoad(from: pointerToPointer, name: "pointer")
-            let byteAfterBody = buildLoad(from: pointerAfterBody, name: "byte")
-            let byteIsZeroAfterBody = buildComparison(
-                of: byteAfterBody,
-                to: context.makeInt8(0 as UInt8),
-                using: .equalTo,
-                name: "byteiszero"
-            )
+            let pointerAfterBody = buildLoad(from: pointerToPointer)
+            let byteAfterBody = buildLoad(from: pointerAfterBody)
+            let byteIsZeroAfterBody = buildComparison(of: byteAfterBody, to: context.makeInt8(0 as UInt8), using: .equalTo)
             buildBranch(to: exitBlock, if: byteIsZeroAfterBody, elseTo: bodyBlock)
             position(atEndOf: exitBlock)
         }
