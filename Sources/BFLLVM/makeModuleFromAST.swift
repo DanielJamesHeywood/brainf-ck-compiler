@@ -20,7 +20,7 @@ extension LLVMBuilder {
             main.appendBasicBlock(successBlock)
             let pointer = buildLoad(from: pointerToPointer)
             let incrementedPointer = buildGetElementPointer(indexing: pointer, at: context.makeInt64(1 as Int64), noWrapFlags: [.inBounds])
-            let incrementedPointerIsInBounds = buildComparison(
+            let incrementedPointerIsOutOfBounds = buildComparison(
                 of: incrementedPointer,
                 to: context.makePointer(
                     indexing: pointerToBytes,
@@ -28,9 +28,9 @@ extension LLVMBuilder {
                     thenAt: context.makeInt64(30000 as UInt64),
                     noWrapFlags: [.inBounds]
                 ),
-                using: .unsignedLessThan
+                using: .unsignedGreaterThanOrEqualTo
             )
-            buildBranch(to: successBlock, if: incrementedPointerIsInBounds, elseTo: failureBlock)
+            buildBranch(to: failureBlock, if: incrementedPointerIsOutOfBounds, elseTo: successBlock)
             position(atEndOf: failureBlock)
             buildReturn(of: context.makeInt32(1 as UInt32))
             position(atEndOf: successBlock)
@@ -41,7 +41,7 @@ extension LLVMBuilder {
             main.appendBasicBlock(failureBlock)
             main.appendBasicBlock(successBlock)
             let pointer = buildLoad(from: pointerToPointer)
-            let decrementedPointerWillBeInBounds = buildComparison(
+            let decrementedPointerWillBeOutOfBounds = buildComparison(
                 of: pointer,
                 to: context.makePointer(
                     indexing: pointerToBytes,
@@ -49,9 +49,9 @@ extension LLVMBuilder {
                     thenAt: context.makeInt64(0 as UInt64),
                     noWrapFlags: [.inBounds]
                 ),
-                using: .unsignedGreaterThan
+                using: .unsignedLessThanOrEqualTo
             )
-            buildBranch(to: successBlock, if: decrementedPointerWillBeInBounds, elseTo: failureBlock)
+            buildBranch(to: failureBlock, if: decrementedPointerWillBeOutOfBounds, elseTo: successBlock)
             position(atEndOf: failureBlock)
             buildReturn(of: context.makeInt32(1 as UInt32))
             position(atEndOf: successBlock)
