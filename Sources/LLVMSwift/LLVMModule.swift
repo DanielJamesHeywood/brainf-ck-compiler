@@ -24,7 +24,12 @@ extension LLVMModule {
         LLVMFunction(rawValue: LLVMAddFunction(rawModule, name, LLVMFunction<Return, repeat each Parameter>.rawType(in: context)))
     }
     
-    @inlinable public func addGlobal<Value: LLVMValue, let addressSpace: LLVMAddressSpace>(name: String = "") -> LLVMPointer<Value, addressSpace> {
-        LLVMPointer(rawValue: LLVMAddGlobalInAddressSpace(rawModule, Value.rawType(in: context), name, UInt32(addressSpace)))
+    @inlinable public func addGlobal<Value: LLVMValue, let addressSpace: LLVMAddressSpace>(
+        name: String = "",
+        initializingTo value: Value
+    ) -> LLVMPointer<Value, addressSpace> {
+        let rawGlobal = LLVMAddGlobalInAddressSpace(rawModule, Value.rawType(in: context), name, UInt32(addressSpace)) as LLVMValueRef
+        LLVMSetInitializer(rawGlobal, value.rawValue)
+        return LLVMPointer(rawValue: rawGlobal)
     }
 }
