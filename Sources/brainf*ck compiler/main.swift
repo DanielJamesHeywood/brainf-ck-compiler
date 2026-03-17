@@ -1,5 +1,6 @@
 import BFAbstractSyntaxTree
 import BFCommand
+import BFLLVM
 import LLVMSwift
 import System
 import Utilities
@@ -37,5 +38,6 @@ do {
         exit(with: .failure)
     }
     let context = LLVMContext()
+    let module = context.makeModule(for: abstractSyntaxTree)
     exit(with: .failure)
 }

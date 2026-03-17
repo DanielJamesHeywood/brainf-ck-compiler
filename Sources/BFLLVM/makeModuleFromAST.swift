@@ -1,6 +1,42 @@
 import BFAbstractSyntaxTree
 import LLVMSwift
 
+extension LLVMContext {
+    
+    @inlinable public func makeModule(for abstractSyntaxTree: AbstractSyntaxTree) -> LLVMModule {
+        let module = makeModule()
+        let putchar = module.addFunction(name: "putchar") as LLVMFunction<LLVMInt32, LLVMInt32>
+        let getchar = module.addFunction(name: "getchar") as LLVMFunction<LLVMInt32>
+        let main = module.addFunction(name: "main") as LLVMFunction<LLVMInt32>
+        let pointerToBytes = module.addGlobal(initializingTo: makeNull()) as LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>
+        let pointerToPointer = module.addGlobal(
+            initializingTo: makePointer(
+                indexing: pointerToBytes,
+                at: makeInt64(0 as UInt64),
+                thenAt: makeInt64(0 as UInt64),
+                noWrapFlags: [.inBounds]
+            )
+        ) as LLVMPointer<LLVMPointer<LLVMInt8, 0>, 0>
+        let builder = makeBuilder()
+        let startBlock = makeBasicBlock()
+        main.appendBasicBlock(startBlock)
+        builder.position(atEndOf: startBlock)
+        for rootNode in abstractSyntaxTree.root {
+            builder.buildAbstractSyntaxTreeNode(
+                rootNode,
+                in: self,
+                putchar: putchar,
+                getchar: getchar,
+                main: main,
+                pointerToBytes: pointerToBytes,
+                pointerToPointer: pointerToPointer
+            )
+        }
+        builder.buildReturn(of: makeInt32(0 as UInt32))
+        return module
+    }
+}
+
 extension LLVMBuilder {
     
     @inlinable func buildAbstractSyntaxTreeNode(
@@ -9,8 +45,8 @@ extension LLVMBuilder {
         putchar: LLVMFunction<LLVMInt32, LLVMInt32>,
         getchar: LLVMFunction<LLVMInt32>,
         main: LLVMFunction<LLVMInt32>,
-        pointerToPointer: LLVMPointer<LLVMPointer<LLVMInt8, 0>, 0>,
-        pointerToBytes: LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>
+        pointerToBytes: LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>,
+        pointerToPointer: LLVMPointer<LLVMPointer<LLVMInt8, 0>, 0>
     ) {
         switch node {
         case .incrementPointer:
@@ -111,8 +147,8 @@ extension LLVMBuilder {
                     putchar: putchar,
                     getchar: getchar,
                     main: main,
-                    pointerToPointer: pointerToPointer,
-                    pointerToBytes: pointerToBytes
+                    pointerToBytes: pointerToBytes,
+                    pointerToPointer: pointerToPointer
                 )
             }
             main.appendBasicBlock(exitBlock)
