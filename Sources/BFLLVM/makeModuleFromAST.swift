@@ -132,14 +132,14 @@ extension LLVMBuilder {
             let byte = buildTruncation(of: getcharReturnValue)
             buildStore(of: byte, to: pointer)
         case let .loop(children):
-            let bodyBlock = context.makeBasicBlock()
+            let startBlock = context.makeBasicBlock()
             let exitBlock = context.makeBasicBlock()
-            main.appendBasicBlock(bodyBlock)
+            main.appendBasicBlock(startBlock)
             let pointerBeforeBody = buildLoad(from: pointerToPointer)
             let byteBeforeBody = buildLoad(from: pointerBeforeBody)
             let byteIsZeroBeforeBody = buildComparison(of: byteBeforeBody, to: context.makeInt8(0 as UInt8), using: .equalTo)
-            buildBranch(to: exitBlock, if: byteIsZeroBeforeBody, elseTo: bodyBlock)
-            position(atEndOf: bodyBlock)
+            buildBranch(to: exitBlock, if: byteIsZeroBeforeBody, elseTo: startBlock)
+            position(atEndOf: startBlock)
             for child in children {
                 buildAbstractSyntaxTreeNode(
                     child,
@@ -155,7 +155,7 @@ extension LLVMBuilder {
             let pointerAfterBody = buildLoad(from: pointerToPointer)
             let byteAfterBody = buildLoad(from: pointerAfterBody)
             let byteIsZeroAfterBody = buildComparison(of: byteAfterBody, to: context.makeInt8(0 as UInt8), using: .equalTo)
-            buildBranch(to: exitBlock, if: byteIsZeroAfterBody, elseTo: bodyBlock)
+            buildBranch(to: exitBlock, if: byteIsZeroAfterBody, elseTo: startBlock)
             position(atEndOf: exitBlock)
         }
     }
