@@ -3,15 +3,15 @@ import LLVMSwift
 
 extension LLVMBuilder {
     
-    @inlinable func buildNode(
+    @inlinable func buildAbstractSyntaxTreeNode(
         _ node: AbstractSyntaxTree.Node,
         in context: LLVMContext,
-        main: LLVMFunction<LLVMInt32>,
+        failureBlock: LLVMBasicBlock,
         pointerToPointer: LLVMPointer<LLVMPointer<LLVMInt8, 0>, 0>,
         bytes: LLVMArray<LLVMInt8, 30000>,
-        failureBlock: LLVMBasicBlock,
         putchar: LLVMFunction<LLVMInt32, LLVMInt32>,
-        getchar: LLVMFunction<LLVMInt32>
+        getchar: LLVMFunction<LLVMInt32>,
+        main: LLVMFunction<LLVMInt32>
     ) {
         switch node {
         case .incrementPointer:
@@ -107,15 +107,15 @@ extension LLVMBuilder {
             buildBranch(to: exitBlock, if: byteIsZeroBeforeBody, elseTo: bodyBlock)
             position(atEndOf: bodyBlock)
             for child in children {
-                buildNode(
+                buildAbstractSyntaxTreeNode(
                     child,
                     in: context,
-                    main: main,
+                    failureBlock: failureBlock,
                     pointerToPointer: pointerToPointer,
                     bytes: bytes,
-                    failureBlock: failureBlock,
                     putchar: putchar,
-                    getchar: getchar
+                    getchar: getchar,
+                    main: main
                 )
             }
             main.appendBasicBlock(exitBlock)
