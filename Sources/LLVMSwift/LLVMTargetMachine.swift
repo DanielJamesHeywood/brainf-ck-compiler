@@ -17,8 +17,8 @@ public class LLVMTargetMachine {
     
     @usableFromInline let rawTargetMachine: LLVMTargetMachineRef
     
-    @inlinable public init(rawTargetMachine: LLVMTargetMachineRef) {
-        self.rawTargetMachine = rawTargetMachine
+    @inlinable public init(target: LLVMTarget, triple: LLVMMessage, options: Options) {
+        self.rawTargetMachine = LLVMCreateTargetMachineWithOptions(target.rawTarget, triple.rawMessage, options.rawOptions)
     }
     
     @inlinable deinit {
