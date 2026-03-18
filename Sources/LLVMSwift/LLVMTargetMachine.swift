@@ -6,8 +6,8 @@ public class LLVMTargetMachine {
         
         @usableFromInline let rawOptions: LLVMTargetMachineOptionsRef
         
-        @inlinable init(rawOptions: LLVMTargetMachineOptionsRef) {
-            self.rawOptions = rawOptions
+        @inlinable init() {
+            self.rawOptions = LLVMCreateTargetMachineOptions()
         }
         
         @inlinable deinit {
