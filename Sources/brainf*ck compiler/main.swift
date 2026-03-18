@@ -39,5 +39,6 @@ do {
     }
     let context = LLVMContext()
     let module = context.makeModule(for: abstractSyntaxTree)
+    let triple = LLVMTriple.defaultTargetTriple
     exit(with: .failure)
 }
