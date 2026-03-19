@@ -1,0 +1,2 @@
+
+public class LLVMDataLayout: LLVMMessage {}

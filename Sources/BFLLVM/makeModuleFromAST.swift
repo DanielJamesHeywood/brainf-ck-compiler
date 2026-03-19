@@ -3,8 +3,8 @@ import LLVMSwift
 
 extension LLVMContext {
     
-    @inlinable public func makeModule(for abstractSyntaxTree: AbstractSyntaxTree) -> LLVMModule {
-        let module = makeModule()
+    @inlinable public func makeModule(for abstractSyntaxTree: AbstractSyntaxTree, dataLayout: LLVMDataLayout, triple: LLVMTriple) -> LLVMModule {
+        let module = makeModule(dataLayout: dataLayout, triple: triple)
         let putchar = module.addFunction(name: "putchar") as LLVMFunction<LLVMInt32, LLVMInt32>
         let getchar = module.addFunction(name: "getchar") as LLVMFunction<LLVMInt32>
         let main = module.addFunction(name: "main") as LLVMFunction<LLVMInt32>

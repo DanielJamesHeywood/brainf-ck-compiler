@@ -6,9 +6,12 @@ public class LLVMModule {
     
     @usableFromInline let rawModule: LLVMModuleRef
     
-    @inlinable init(context: LLVMContext, name: String = "") {
+    @inlinable init(context: LLVMContext, dataLayout: LLVMDataLayout, triple: LLVMTriple, name: String = "") {
         self.context = context
-        self.rawModule = LLVMModuleCreateWithNameInContext(name, context.rawContext)
+        let rawModule = LLVMModuleCreateWithNameInContext(name, context.rawContext) as LLVMModuleRef
+        LLVMSetDataLayout(rawModule, dataLayout.rawMessage)
+        LLVMSetTarget(rawModule, triple.rawMessage)
+        self.rawModule = rawModule
     }
     
     @inlinable deinit {
