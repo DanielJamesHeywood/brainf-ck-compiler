@@ -63,15 +63,13 @@ extension LLVMContext {
     ) -> LLVMPointer<Element, addressSpace> {
         var rawIndices = [pointerIndex.rawValue, arrayIndex.rawValue] as [LLVMValueRef?]
         return LLVMPointer(
-            rawValue: rawIndices.withUnsafeMutableBufferPointer { buffer in
-                LLVMConstGEPWithNoWrapFlags(
-                    LLVMArray<Element, count>.rawType(in: self),
-                    pointerToArray.rawValue,
-                    buffer.baseAddress,
-                    UInt32(buffer.count),
-                    noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
-                )
-            }
+            rawValue: LLVMConstGEPWithNoWrapFlags(
+                LLVMArray<Element, count>.rawType(in: self),
+                pointerToArray.rawValue,
+                &rawIndices,
+                UInt32(rawIndices.count),
+                noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
+            )
         )
     }
 }

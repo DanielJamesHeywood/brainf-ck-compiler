@@ -5,9 +5,7 @@ public class LLVMFunction<Return: LLVMValue, each Parameter: LLVMValue>: LLVMVal
     @inlinable override class func rawType(in context: LLVMContext) -> LLVMTypeRef {
         var rawParameterTypes = [] as [LLVMTypeRef?]
         repeat rawParameterTypes.append((each Parameter).rawType(in: context))
-        return rawParameterTypes.withUnsafeMutableBufferPointer { buffer in
-            LLVMFunctionType(Return.rawType(in: context), buffer.baseAddress, UInt32(buffer.count), 0)
-        }
+        return LLVMFunctionType(Return.rawType(in: context), &rawParameterTypes, UInt32(rawParameterTypes.count), 0)
     }
 }
 
