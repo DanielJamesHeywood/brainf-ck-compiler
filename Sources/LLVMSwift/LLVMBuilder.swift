@@ -62,19 +62,17 @@ extension LLVMBuilder {
         noWrapFlags: [LLVMNoWrapFlag] = []
     ) -> LLVMPointer<Element, addressSpace> {
         var rawIndex = index.rawValue as LLVMValueRef?
-        return withUnsafeMutablePointer(to: &rawIndex) { pointerToRawIndex in
-            LLVMPointer(
-                rawValue: LLVMBuildGEPWithNoWrapFlags(
-                    rawBuilder,
-                    Element.rawType(in: context),
-                    pointer.rawValue,
-                    pointerToRawIndex,
-                    1,
-                    name,
-                    noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
-                )
+        return LLVMPointer(
+            rawValue: LLVMBuildGEPWithNoWrapFlags(
+                rawBuilder,
+                Element.rawType(in: context),
+                pointer.rawValue,
+                &rawIndex,
+                1,
+                name,
+                noWrapFlags.reduce(0) { rawNoWrapFlags, noWrapFlag in rawNoWrapFlags | noWrapFlag.rawNoWrapFlag }
             )
-        }
+        )
     }
     
     @inlinable public func buildTruncation(of value: LLVMInt32, name: String = "") -> LLVMInt8 {
