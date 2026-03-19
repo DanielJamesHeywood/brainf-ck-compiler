@@ -1,4 +1,5 @@
 import LLVM
+import System
 
 public class LLVMTargetMachine {
     
@@ -23,5 +24,21 @@ public class LLVMTargetMachine {
     
     @inlinable deinit {
         LLVMDisposeTargetMachine(rawTargetMachine)
+    }
+}
+
+extension LLVMTargetMachine {
+    
+    @inlinable public func emit(_ module: LLVMModule, as fileType: LLVMFileType, toFileAt path: FilePath) throws(LLVMError) {
+        var rawErrorMessage: UnsafeMutablePointer<CChar>?
+        guard LLVMTargetMachineEmitToFile(
+            rawTargetMachine,
+            module.rawModule,
+            path.string,
+            fileType.rawFileType,
+            &rawErrorMessage
+        ) == 0 else {
+            throw LLVMError(LLVMMessage(rawMessage: rawErrorMessage.unsafelyUnwrapped))
+        }
     }
 }
