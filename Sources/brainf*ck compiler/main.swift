@@ -42,7 +42,7 @@ do {
     do {
         target = try LLVMTarget(triple: triple)
     } catch {
-        print("Failed to create an LLVM target: \(error)", to: .standardError)
+        print("Failed to create an LLVM target from '\(triple)': \(error)", to: .standardError)
         exit(with: .failure)
     }
     let context = LLVMContext()
