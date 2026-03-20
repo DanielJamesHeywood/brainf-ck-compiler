@@ -37,7 +37,7 @@ do {
         print("'\(bfFilePath)' contains an unmatched closing bracket (']')", to: .standardError)
         exit(with: .failure)
     }
-    let context = LLVMContext()
     let triple = makeDefaultTargetTriple()
+    let context = LLVMContext()
     exit(with: .failure)
 }
