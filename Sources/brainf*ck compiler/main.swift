@@ -38,6 +38,13 @@ do {
         exit(with: .failure)
     }
     let triple = makeDefaultTargetTriple()
+    let target: LLVMTarget
+    do {
+        target = try LLVMTarget(triple: triple)
+    } catch {
+        print("Failed: \(error)", to: .standardError)
+        exit(with: .failure)
+    }
     let context = LLVMContext()
     exit(with: .failure)
 }
