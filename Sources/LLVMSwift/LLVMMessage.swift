@@ -12,3 +12,10 @@ public class LLVMMessage {
         LLVMDisposeMessage(rawMessage)
     }
 }
+
+extension LLVMMessage: CustomStringConvertible {
+    
+    @inlinable public var description: String {
+        String(cString: rawMessage)
+    }
+}
