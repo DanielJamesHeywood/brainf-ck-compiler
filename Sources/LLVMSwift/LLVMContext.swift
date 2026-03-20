@@ -47,7 +47,7 @@ extension LLVMContext {
         makeInt64(UInt64(bitPattern: value))
     }
     
-    @inlinable public func makeModule(dataLayout: LLVMDataLayout, triple: LLVMTriple, name: String = "") -> LLVMModule {
+    @inlinable public func makeModule(dataLayout: LLVMTargetData, triple: LLVMTriple, name: String = "") -> LLVMModule {
         LLVMModule(context: self, dataLayout: dataLayout, triple: triple, name: name)
     }
     
