@@ -29,6 +29,13 @@ public class LLVMTargetMachine {
 
 extension LLVMTargetMachine {
     
+    @inlinable public func makeDataLayout() -> LLVMTargetData {
+        LLVMTargetData(rawTargetData: LLVMCreateTargetDataLayout(rawTargetMachine))
+    }
+}
+
+extension LLVMTargetMachine {
+    
     @inlinable public func emit(_ module: LLVMModule, as fileType: LLVMFileType, toFileAt path: FilePath) throws(LLVMError) {
         var rawErrorMessage: UnsafeMutablePointer<CChar>?
         guard LLVMTargetMachineEmitToFile(
