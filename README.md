@@ -6,6 +6,9 @@ Name: llvm
 Libs: -L/opt/homebrew/opt/llvm/lib -lLLVM-22
 Cflags: -I/opt/homebrew/opt/llvm/include
 ```
+
+## Using **BFC**
+
 ```sh
   $ bfc helloworld.bf
   $ clang helloworld.o -o helloworld
