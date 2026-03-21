@@ -13,6 +13,8 @@ Cflags: -I/opt/homebrew/opt/llvm/include
 
 ## Using **BFC**
 
+**BFC** compiles brainf*ck files into object files. To run your code, you must first link these object files externally into an executable:
+
 ```sh
   $ bfc helloworld.bf
   $ clang helloworld.o -o helloworld
