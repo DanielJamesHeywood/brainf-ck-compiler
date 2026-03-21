@@ -11,7 +11,7 @@ do {
         exit(with: .failure)
     }
     let bfFilePath = FilePath(CommandLine.arguments[1])
-    guard let bfFileExtension = bfFilePath.extension else {
+    guard let bfFileExtension = bfFilePath.extension, let bfFileStem = bfFilePath.stem else {
         print("Expected a path to a brainf*ck file, but got a path to a file with no extension", to: .standardError)
         exit(with: .failure)
     }
@@ -38,6 +38,10 @@ do {
         exit(with: .failure)
     }
     initializeAllTargetInfos()
+    initializeAllTargets()
+    initializeAllTargetMCs()
+    initializeAllAsmPrinters()
+    let context = LLVMContext()
     let triple = makeDefaultTargetTriple()
     let target: LLVMTarget
     do {
@@ -46,15 +50,11 @@ do {
         print("Failed to create an LLVM target from '\(triple)': \(error)", to: .standardError)
         exit(with: .failure)
     }
-    initializeAllTargets()
-    initializeAllTargetMCs()
-    initializeAllAsmPrinters()
-    let context = LLVMContext()
     let targetMachineOptions = LLVMTargetMachineOptions(cpu: makeHostCPUName(), features: makeHostCPUFeatures())
     let targetMachine = LLVMTargetMachine(target: target, triple: triple, options: targetMachineOptions)
     let module = context.makeModule(from: abstractSyntaxTree, dataLayout: targetMachine.makeDataLayout(), triple: triple)
     do {
-        try targetMachine.emit(module, as: .object, toFileAt: FilePath(bfFilePath.stem.unsafelyUnwrapped + ".o"))
+        try targetMachine.emit(module, as: .object, toFileAt: FilePath(bfFileStem + ".o"))
     } catch {
         print("Failed to create the object file: \(error)", to: .standardError)
         exit(with: .failure)
