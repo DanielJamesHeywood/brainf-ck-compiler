@@ -5,7 +5,7 @@
 ## Building **BFC**
 
 This package is dependent on LLVM.
-On macOS, you should install LLVM via homebrew and create the following pkg-config file, `llvm.pc`, at `/opt/homebrew/lib/pkgconfig/`:
+On macOS, you can resolve this dependency by installing LLVM via homebrew and creating the following pkg-config file, `llvm.pc`, at `/opt/homebrew/lib/pkgconfig/`:
 
 ```
 Name: llvm
