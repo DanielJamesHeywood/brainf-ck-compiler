@@ -1,6 +1,6 @@
 # Brainf*ck Compiler
 
-**Brainf*ck Compiler**, or **BFC**, is written in Swift and backended by LLVM.
+**Brainf*ck Compiler**, or **BFC**, is written in Swift with an LLVM backend.
 
 ## Building **BFC**
 
