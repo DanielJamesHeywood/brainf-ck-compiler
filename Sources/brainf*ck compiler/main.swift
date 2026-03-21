@@ -38,6 +38,7 @@ do {
         exit(with: .failure)
     }
     let triple = makeDefaultTargetTriple()
+    initializeAllTargetInfos()
     let target: LLVMTarget
     do {
         target = try LLVMTarget(triple: triple)
