@@ -37,8 +37,11 @@ do {
         print("'\(bfFilePath)' contains an unmatched closing bracket (']')", to: .standardError)
         exit(with: .failure)
     }
-    let triple = makeDefaultTargetTriple()
     initializeAllTargetInfos()
+    initializeAllTargets()
+    initializeAllTargetMCs()
+    initializeAllAsmPrinters()
+    let triple = makeDefaultTargetTriple()
     let target: LLVMTarget
     do {
         target = try LLVMTarget(triple: triple)
@@ -47,5 +50,13 @@ do {
         exit(with: .failure)
     }
     let context = LLVMContext()
-    exit(with: .failure)
+    let targetMachineOptions = LLVMTargetMachineOptions(cpu: makeHostCPUName(), features: makeHostCPUFeatures())
+    let targetMachine = LLVMTargetMachine(target: target, triple: triple, options: targetMachineOptions)
+    let module = context.makeModule(from: abstractSyntaxTree, dataLayout: targetMachine.makeDataLayout(), triple: triple)
+    do {
+        try targetMachine.emit(module, as: .object, toFileAt: FilePath("helloworld.o"))
+    } catch {
+        print("Failed to create the object file: \(error)", to: .standardError)
+        exit(with: .failure)
+    }
 }
