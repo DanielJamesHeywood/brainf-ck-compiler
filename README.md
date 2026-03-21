@@ -1,5 +1,7 @@
 # Brainf*ck Compiler
 
+## Building **BFC**
+
 `llvm.pc` `/opt/homebrew/lib/pkgconfig/`
 ```
 Name: llvm
