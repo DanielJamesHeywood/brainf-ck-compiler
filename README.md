@@ -1,5 +1,7 @@
 # Brainf*ck Compiler
 
+**Brainf*ck Compiler**, or **BFC**, is written in Swift and backended by LLVM.
+
 ## Building **BFC**
 
 `llvm.pc` `/opt/homebrew/lib/pkgconfig/`
