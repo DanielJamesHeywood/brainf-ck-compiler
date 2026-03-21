@@ -4,8 +4,11 @@ public class LLVMTargetMachineOptions {
     
     @usableFromInline let rawOptions: LLVMTargetMachineOptionsRef
     
-    @inlinable public init() {
-        self.rawOptions = LLVMCreateTargetMachineOptions()
+    @inlinable public init(cpu: LLVMCPUName, features: LLVMCPUFeatures) {
+        let rawOptions = LLVMCreateTargetMachineOptions() as LLVMTargetMachineOptionsRef
+        LLVMTargetMachineOptionsSetCPU(rawOptions, cpu.rawMessage)
+        LLVMTargetMachineOptionsSetFeatures(rawOptions, features.rawMessage)
+        self.rawOptions = rawOptions
     }
     
     @inlinable deinit {
