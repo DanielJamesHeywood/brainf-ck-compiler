@@ -38,9 +38,6 @@ do {
         exit(with: .failure)
     }
     initializeAllTargetInfos()
-    initializeAllTargets()
-    initializeAllTargetMCs()
-    initializeAllAsmPrinters()
     let triple = makeDefaultTargetTriple()
     let target: LLVMTarget
     do {
@@ -49,6 +46,9 @@ do {
         print("Failed to create an LLVM target from '\(triple)': \(error)", to: .standardError)
         exit(with: .failure)
     }
+    initializeAllTargets()
+    initializeAllTargetMCs()
+    initializeAllAsmPrinters()
     let context = LLVMContext()
     let targetMachineOptions = LLVMTargetMachineOptions(cpu: makeHostCPUName(), features: makeHostCPUFeatures())
     let targetMachine = LLVMTargetMachine(target: target, triple: triple, options: targetMachineOptions)
