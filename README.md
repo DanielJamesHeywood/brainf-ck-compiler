@@ -7,7 +7,7 @@ Libs: -L/opt/homebrew/opt/llvm/lib -lLLVM-22
 Cflags: -I/opt/homebrew/opt/llvm/include
 ```
 ```sh
-bfc helloworld.bf
-clang helloworld.o -o helloworld
-./helloworld
+  $ bfc helloworld.bf
+  $ clang helloworld.o -o helloworld
+  $ ./helloworld
 ```
