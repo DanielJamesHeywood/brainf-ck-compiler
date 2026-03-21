@@ -54,7 +54,9 @@ do {
     let targetMachine = LLVMTargetMachine(target: target, triple: triple, options: targetMachineOptions)
     let module = context.makeModule(from: abstractSyntaxTree, dataLayout: targetMachine.makeDataLayout(), triple: triple)
     do {
-        try targetMachine.emit(module, as: .object, toFileAt: FilePath(bfFileStem + ".o"))
+        var objectFilePath = FilePath(bfFileStem)
+        objectFilePath.extension = "o"
+        try targetMachine.emit(module, as: .object, toFileAt: objectFilePath)
     } catch {
         print("Failed to create the object file: \(error)", to: .standardError)
         exit(with: .failure)
