@@ -1,4 +1,5 @@
 import LLVM
+import System
 
 public class LLVMModule {
     
@@ -34,5 +35,15 @@ extension LLVMModule {
         let rawGlobal = LLVMAddGlobalInAddressSpace(rawModule, Value.rawType(in: context), name, UInt32(addressSpace)) as LLVMValueRef
         LLVMSetInitializer(rawGlobal, value.rawValue)
         return LLVMPointer(rawValue: rawGlobal)
+    }
+}
+
+extension LLVMModule {
+    
+    @inlinable public func print(toFileAt path: FilePath) throws(LLVMError) {
+        var rawErrorMessage: UnsafeMutablePointer<CChar>?
+        guard LLVMPrintModuleToFile(rawModule, path.string, &rawErrorMessage) == 0 else {
+            throw LLVMError(LLVMMessage(rawMessage: rawErrorMessage.unsafelyUnwrapped))
+        }
     }
 }
