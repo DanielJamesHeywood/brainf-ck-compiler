@@ -6,8 +6,8 @@ import System
 import Utilities
 
 do {
-    guard CommandLine.arguments.count == 2 else {
-        print("Expected exactly 1 argument, but got \(CommandLine.arguments.count - 1)", to: .standardError)
+    guard CommandLine.arguments.count >= 2 else {
+        print("Expected at least 1 argument, but got 0", to: .standardError)
         exit(with: .failure)
     }
     let bfFilePath = FilePath(CommandLine.arguments[1])
@@ -18,6 +18,19 @@ do {
     guard bfFileExtension == "bf" else {
         print("Expected a path to a brainf*ck file, but got a path to a file with extension '.\(bfFileExtension)'", to: .standardError)
         exit(with: .failure)
+    }
+    var emitLLVMIR = false
+    var emitAssembly = false
+    for argument in CommandLine.arguments.dropFirst(2) {
+        switch argument {
+        case "-emit-llvm-ir":
+            emitLLVMIR = true
+        case "-emit-assembly":
+            emitAssembly = true
+        default:
+            print("Unexpected argument: '\(argument)'", to: .standardError)
+            exit(with: .failure)
+        }
     }
     let contentsOfBFFile: String
     do {
@@ -62,7 +75,7 @@ do {
         print("Failed to create the object file: \(error)", to: .standardError)
         exitCode = .failure
     }
-    if false {
+    if emitLLVMIR {
         do {
             var filePath = FilePath(bfFileStem)
             filePath.extension = "ll"
@@ -72,7 +85,7 @@ do {
             exitCode = .failure
         }
     }
-    if false {
+    if emitAssembly {
         do {
             var filePath = FilePath(bfFileStem)
             filePath.extension = "s"
