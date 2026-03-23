@@ -53,12 +53,34 @@ do {
     let targetMachineOptions = LLVMTargetMachineOptions(cpu: makeHostCPUName(), features: makeHostCPUFeatures())
     let targetMachine = LLVMTargetMachine(target: target, triple: triple, options: targetMachineOptions)
     let module = context.makeModule(from: abstractSyntaxTree, dataLayout: targetMachine.makeDataLayout(), triple: triple)
+    var exitCode = ExitCode.success
     do {
         var filePath = FilePath(bfFileStem)
         filePath.extension = "o"
         try targetMachine.emit(module, as: .object, toFileAt: filePath)
     } catch {
         print("Failed to create the object file: \(error)", to: .standardError)
-        exit(with: .failure)
+        exitCode = .failure
     }
+    if false {
+        do {
+            var filePath = FilePath(bfFileStem)
+            filePath.extension = "ll"
+            try module.print(toFileAt: filePath)
+        } catch {
+            print("Failed to create the LLVM IR file: \(error)", to: .standardError)
+            exitCode = .failure
+        }
+    }
+    if false {
+        do {
+            var filePath = FilePath(bfFileStem)
+            filePath.extension = "s"
+            try targetMachine.emit(module, as: .assembly, toFileAt: filePath)
+        } catch {
+            print("Failed to create the assembly file: \(error)", to: .standardError)
+            exitCode = .failure
+        }
+    }
+    exit(with: exitCode)
 }
