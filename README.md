@@ -23,3 +23,19 @@ To run your code, you must first link these object files externally into an exec
   $ clang helloworld.o -o helloworld
   $ ./helloworld
 ```
+
+## Emitting LLVM IR
+
+Passing `-emit-llvm-ir` as a command-line argument causes **BFC** to emit LLVM IR in addition to the object file:
+
+```sh
+  $ bfc helloworld.bf -emit-llvm-ir
+```
+
+## Emitting Assembly
+
+Passing `-emit-assembly` as a command-line argument causes **BFC** to emit assembly in addition to the object file:
+
+```sh
+  $ bfc helloworld.bf -emit-assembly
+```
