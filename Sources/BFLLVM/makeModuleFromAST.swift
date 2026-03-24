@@ -8,14 +8,15 @@ extension LLVMContext {
         let putchar = module.addFunction(name: "putchar") as LLVMFunction<LLVMInt32, LLVMInt32>
         let getchar = module.addFunction(name: "getchar") as LLVMFunction<LLVMInt32>
         let main = module.addFunction(name: "main") as LLVMFunction<LLVMInt32>
-        let pointerToBytes = module.addGlobal(initializingTo: makeNull()) as LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>
+        let pointerToBytes = module.addGlobal(initializingTo: makeNull(), name: "pointertobytes") as LLVMPointer<LLVMArray<LLVMInt8, 30000>, 0>
         let pointerToPointer = module.addGlobal(
             initializingTo: makePointer(
                 indexing: pointerToBytes,
                 at: makeInt64(0 as UInt64),
                 thenAt: makeInt64(0 as UInt64),
                 noWrapFlags: [.inBounds]
-            )
+            ),
+            name: "pointertopointer"
         ) as LLVMPointer<LLVMPointer<LLVMInt8, 0>, 0>
         let builder = makeBuilder()
         let startBlock = makeBasicBlock()
