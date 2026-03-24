@@ -8,6 +8,7 @@ public class LLVMTargetMachineOptions {
         let rawOptions = LLVMCreateTargetMachineOptions() as LLVMTargetMachineOptionsRef
         LLVMTargetMachineOptionsSetCPU(rawOptions, cpu.rawMessage)
         LLVMTargetMachineOptionsSetFeatures(rawOptions, features.rawMessage)
+        LLVMTargetMachineOptionsSetCodeGenOptLevel(rawOptions, LLVMCodeGenLevelAggressive)
         self.rawOptions = rawOptions
     }
     
