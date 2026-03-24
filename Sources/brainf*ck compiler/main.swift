@@ -63,7 +63,7 @@ do {
         print("Failed to create an LLVM target from '\(triple)': \(error)", to: .standardError)
         exit(with: .failure)
     }
-    let targetMachineOptions = LLVMTargetMachineOptions(cpu: makeHostCPUName(), features: makeHostCPUFeatures())
+    let targetMachineOptions = LLVMTargetMachineOptions(cpu: makeHostCPUName(), features: makeHostCPUFeatures(), optimizationLevel: .aggressive)
     let targetMachine = LLVMTargetMachine(target: target, triple: triple, options: targetMachineOptions)
     let module = context.makeModule(
         from: abstractSyntaxTree,
