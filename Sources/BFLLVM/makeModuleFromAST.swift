@@ -51,12 +51,17 @@ extension LLVMBuilder {
     ) {
         switch node {
         case .incrementPointer:
-            let successBlock = context.makeBasicBlock()
-            let failureBlock = context.makeBasicBlock()
+            let successBlock = context.makeBasicBlock(name: "incrementpointer.success")
+            let failureBlock = context.makeBasicBlock(name: "incrementpointer.failure")
             main.appendBasicBlock(failureBlock)
             main.appendBasicBlock(successBlock)
-            let pointer = buildLoad(from: pointerToPointer)
-            let incrementedPointer = buildGetElementPointer(indexing: pointer, at: context.makeInt64(1 as Int64), noWrapFlags: [.inBounds])
+            let pointer = buildLoad(from: pointerToPointer, name: "incrementpointer.pointer")
+            let incrementedPointer = buildGetElementPointer(
+                indexing: pointer,
+                at: context.makeInt64(1 as Int64),
+                name: "incrementpointer.incrementedpointer",
+                noWrapFlags: [.inBounds]
+            )
             let incrementedPointerIsOutOfBounds = buildComparison(
                 of: incrementedPointer,
                 to: context.makePointer(
@@ -65,7 +70,8 @@ extension LLVMBuilder {
                     thenAt: context.makeInt64(30000 as UInt64),
                     noWrapFlags: [.inBounds]
                 ),
-                using: .unsignedGreaterThanOrEqualTo
+                using: .unsignedGreaterThanOrEqualTo,
+                name: "incrementpointer.incrementedpointerisoutofbounds"
             )
             buildBranch(to: failureBlock, if: incrementedPointerIsOutOfBounds, elseTo: successBlock)
             position(atEndOf: failureBlock)
@@ -73,11 +79,11 @@ extension LLVMBuilder {
             position(atEndOf: successBlock)
             buildStore(of: incrementedPointer, to: pointerToPointer)
         case .decrementPointer:
-            let successBlock = context.makeBasicBlock()
-            let failureBlock = context.makeBasicBlock()
+            let successBlock = context.makeBasicBlock(name: "decrementpointer.success")
+            let failureBlock = context.makeBasicBlock(name: "decrementpointer.failure")
             main.appendBasicBlock(failureBlock)
             main.appendBasicBlock(successBlock)
-            let pointer = buildLoad(from: pointerToPointer)
+            let pointer = buildLoad(from: pointerToPointer, name: "decrementpointer.pointer")
             let decrementedPointerWillBeOutOfBounds = buildComparison(
                 of: pointer,
                 to: context.makePointer(
@@ -86,59 +92,80 @@ extension LLVMBuilder {
                     thenAt: context.makeInt64(0 as UInt64),
                     noWrapFlags: [.inBounds]
                 ),
-                using: .unsignedLessThanOrEqualTo
+                using: .unsignedLessThanOrEqualTo,
+                name: "decrementpointer.decrementedpointerwillbeoutofbounds"
             )
             buildBranch(to: failureBlock, if: decrementedPointerWillBeOutOfBounds, elseTo: successBlock)
             position(atEndOf: failureBlock)
             buildReturn(of: context.makeInt32(1 as UInt32))
             position(atEndOf: successBlock)
-            let decrementedPointer = buildGetElementPointer(indexing: pointer, at: context.makeInt64(-1 as Int64), noWrapFlags: [.inBounds])
+            let decrementedPointer = buildGetElementPointer(
+                indexing: pointer,
+                at: context.makeInt64(-1 as Int64),
+                name: "decrementpointer.decrementedpointer",
+                noWrapFlags: [.inBounds]
+            )
             buildStore(of: decrementedPointer, to: pointerToPointer)
         case .incrementByte:
-            let pointer = buildLoad(from: pointerToPointer)
-            let byte = buildLoad(from: pointer)
-            let incrementedByte = buildAddition(of: context.makeInt8(1 as UInt8), to: byte)
+            let pointer = buildLoad(from: pointerToPointer, name: "incrementbyte.pointer")
+            let byte = buildLoad(from: pointer, name: "incrementbyte.byte")
+            let incrementedByte = buildAddition(of: context.makeInt8(1 as UInt8), to: byte, name: "incrementbyte.incrementedbyte")
             buildStore(of: incrementedByte, to: pointer)
         case .decrementByte:
-            let pointer = buildLoad(from: pointerToPointer)
-            let byte = buildLoad(from: pointer)
-            let decrementedByte = buildSubtraction(of: context.makeInt8(1 as UInt8), from: byte)
+            let pointer = buildLoad(from: pointerToPointer, name: "decrementbyte.pointer")
+            let byte = buildLoad(from: pointer, name: "decrementbyte.byte")
+            let decrementedByte = buildSubtraction(of: context.makeInt8(1 as UInt8), from: byte, name: "decrementbyte.decrementedbyte")
             buildStore(of: decrementedByte, to: pointer)
         case .outputByte:
-            let successBlock = context.makeBasicBlock()
-            let failureBlock = context.makeBasicBlock()
+            let successBlock = context.makeBasicBlock(name: "outputbyte.success")
+            let failureBlock = context.makeBasicBlock(name: "outputbyte.failure")
             main.appendBasicBlock(failureBlock)
             main.appendBasicBlock(successBlock)
-            let pointer = buildLoad(from: pointerToPointer)
-            let byte = buildLoad(from: pointer)
-            let zeroExtendedByte = buildZeroExtension(of: byte)
-            let putcharReturnValue = buildCall(to: putchar, passing: zeroExtendedByte)
-            let putcharReturnedEOF = buildComparison(of: putcharReturnValue,to: context.makeInt32(0 as UInt32), using: .signedLessThan)
+            let pointer = buildLoad(from: pointerToPointer, name: "outputbyte.pointer")
+            let byte = buildLoad(from: pointer, name: "outputbyte.byte")
+            let zeroExtendedByte = buildZeroExtension(of: byte, name: "outputbyte.zeroextendedbyte")
+            let putcharReturnValue = buildCall(to: putchar, passing: zeroExtendedByte, name: "outputbyte.putcharreturnvalue")
+            let putcharReturnedEOF = buildComparison(
+                of: putcharReturnValue,
+                to: context.makeInt32(0 as UInt32),
+                using: .signedLessThan,
+                name: "outputbyte.putcharreturnedeof"
+            )
             buildBranch(to: failureBlock, if: putcharReturnedEOF, elseTo: successBlock)
             position(atEndOf: failureBlock)
             buildReturn(of: context.makeInt32(1 as UInt32))
             position(atEndOf: successBlock)
         case .inputByte:
-            let successBlock = context.makeBasicBlock()
-            let failureBlock = context.makeBasicBlock()
+            let successBlock = context.makeBasicBlock(name: "inputbyte.success")
+            let failureBlock = context.makeBasicBlock(name: "inputbyte.failure")
             main.appendBasicBlock(failureBlock)
             main.appendBasicBlock(successBlock)
-            let getcharReturnValue = buildCall(to: getchar)
-            let getcharReturnedEOF = buildComparison(of: getcharReturnValue, to: context.makeInt32(0 as UInt32), using: .signedLessThan)
+            let getcharReturnValue = buildCall(to: getchar, name: "inputbyte.getcharreturnvalue")
+            let getcharReturnedEOF = buildComparison(
+                of: getcharReturnValue,
+                to: context.makeInt32(0 as UInt32),
+                using: .signedLessThan,
+                name: "inputbyte.getcharreturnedeof"
+            )
             buildBranch(to: failureBlock, if: getcharReturnedEOF, elseTo: successBlock)
             position(atEndOf: failureBlock)
             buildReturn(of: context.makeInt32(1 as UInt32))
             position(atEndOf: successBlock)
-            let pointer = buildLoad(from: pointerToPointer)
-            let byte = buildTruncation(of: getcharReturnValue)
+            let pointer = buildLoad(from: pointerToPointer, name: "inputbyte.pointer")
+            let byte = buildTruncation(of: getcharReturnValue, name: "inputbyte.byte")
             buildStore(of: byte, to: pointer)
         case let .loop(children):
-            let startBlock = context.makeBasicBlock()
-            let exitBlock = context.makeBasicBlock()
+            let startBlock = context.makeBasicBlock(name: "loop.start")
+            let exitBlock = context.makeBasicBlock(name: "loop.exit")
             main.appendBasicBlock(startBlock)
-            let pointerBeforeBody = buildLoad(from: pointerToPointer)
-            let byteBeforeBody = buildLoad(from: pointerBeforeBody)
-            let byteIsNonZeroBeforeBody = buildComparison(of: byteBeforeBody, to: context.makeInt8(0 as UInt8), using: .notEqualTo)
+            let pointerBeforeBody = buildLoad(from: pointerToPointer, name: "loop.pointer")
+            let byteBeforeBody = buildLoad(from: pointerBeforeBody, name: "loop.byte")
+            let byteIsNonZeroBeforeBody = buildComparison(
+                of: byteBeforeBody,
+                to: context.makeInt8(0 as UInt8),
+                using: .notEqualTo,
+                name: "loop.byteisnonzero"
+            )
             buildBranch(to: startBlock, if: byteIsNonZeroBeforeBody, elseTo: exitBlock)
             position(atEndOf: startBlock)
             for child in children {
@@ -153,9 +180,14 @@ extension LLVMBuilder {
                 )
             }
             main.appendBasicBlock(exitBlock)
-            let pointerAfterBody = buildLoad(from: pointerToPointer)
-            let byteAfterBody = buildLoad(from: pointerAfterBody)
-            let byteIsNonZeroAfterBody = buildComparison(of: byteAfterBody, to: context.makeInt8(0 as UInt8), using: .notEqualTo)
+            let pointerAfterBody = buildLoad(from: pointerToPointer, name: "loop.pointer")
+            let byteAfterBody = buildLoad(from: pointerAfterBody, name: "loop.byte")
+            let byteIsNonZeroAfterBody = buildComparison(
+                of: byteAfterBody,
+                to: context.makeInt8(0 as UInt8),
+                using: .notEqualTo,
+                name: "loop.byteisnonzero"
+            )
             buildBranch(to: startBlock, if: byteIsNonZeroAfterBody, elseTo: exitBlock)
             position(atEndOf: exitBlock)
         }
