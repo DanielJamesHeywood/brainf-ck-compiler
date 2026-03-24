@@ -7,9 +7,10 @@ public class LLVMModule {
     
     @usableFromInline let rawModule: LLVMModuleRef
     
-    @inlinable init(context: LLVMContext, dataLayout: LLVMTargetData, triple: LLVMTriple, name: String = "") {
+    @inlinable init(context: LLVMContext, sourceFilePath: FilePath, dataLayout: LLVMTargetData, triple: LLVMTriple, id: String = "") {
         self.context = context
-        let rawModule = LLVMModuleCreateWithNameInContext(name, context.rawContext) as LLVMModuleRef
+        let rawModule = LLVMModuleCreateWithNameInContext(id, context.rawContext) as LLVMModuleRef
+        LLVMSetSourceFileName(rawModule, sourceFilePath.string, sourceFilePath.length)
         LLVMSetModuleDataLayout(rawModule, dataLayout.rawTargetData)
         LLVMSetTarget(rawModule, triple.rawMessage)
         self.rawModule = rawModule

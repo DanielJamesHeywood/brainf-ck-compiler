@@ -65,7 +65,13 @@ do {
     }
     let targetMachineOptions = LLVMTargetMachineOptions(cpu: makeHostCPUName(), features: makeHostCPUFeatures())
     let targetMachine = LLVMTargetMachine(target: target, triple: triple, options: targetMachineOptions)
-    let module = context.makeModule(from: abstractSyntaxTree, dataLayout: targetMachine.makeDataLayout(), triple: triple, name: bfFileStem)
+    let module = context.makeModule(
+        from: abstractSyntaxTree,
+        sourceFilePath: bfFilePath,
+        dataLayout: targetMachine.makeDataLayout(),
+        triple: triple,
+        id: bfFileStem
+    )
     var exitCode = ExitCode.success
     do {
         var filePath = FilePath(bfFileStem)

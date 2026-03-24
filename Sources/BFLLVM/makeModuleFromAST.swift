@@ -1,15 +1,17 @@
 import BFAbstractSyntaxTree
 import LLVMSwift
+import System
 
 extension LLVMContext {
     
     @inlinable public func makeModule(
         from abstractSyntaxTree: AbstractSyntaxTree,
+        sourceFilePath: FilePath,
         dataLayout: LLVMTargetData,
         triple: LLVMTriple,
-        name: String = ""
+        id: String = ""
     ) -> LLVMModule {
-        let module = makeModule(dataLayout: dataLayout, triple: triple, name: name)
+        let module = makeModule(sourceFilePath: sourceFilePath, dataLayout: dataLayout, triple: triple, id: id)
         let putchar = module.addFunction(name: "putchar") as LLVMFunction<LLVMInt32, LLVMInt32>
         let getchar = module.addFunction(name: "getchar") as LLVMFunction<LLVMInt32>
         let main = module.addFunction(name: "main") as LLVMFunction<LLVMInt32>

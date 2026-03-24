@@ -1,4 +1,5 @@
 import LLVM
+import System
 
 public class LLVMContext {
     
@@ -47,8 +48,8 @@ extension LLVMContext {
         makeInt64(UInt64(bitPattern: value))
     }
     
-    @inlinable public func makeModule(dataLayout: LLVMTargetData, triple: LLVMTriple, name: String = "") -> LLVMModule {
-        LLVMModule(context: self, dataLayout: dataLayout, triple: triple, name: name)
+    @inlinable public func makeModule(sourceFilePath: FilePath, dataLayout: LLVMTargetData, triple: LLVMTriple, id: String = "") -> LLVMModule {
+        LLVMModule(context: self, sourceFilePath: sourceFilePath, dataLayout: dataLayout, triple: triple, id: id)
     }
     
     @inlinable public func makeNull<Element: LLVMValue, let count: LLVMElementCount>() -> LLVMArray<Element, count> {
